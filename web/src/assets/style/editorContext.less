@@ -1,0 +1,546 @@
+.form-question-item {
+    position: relative;
+    padding: 26px 36px 16px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    background-color: #fff;
+
+    .form-question-move {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-14px);
+        cursor: move;
+        z-index: 2;
+
+        img {
+            display: block;
+            width: 28px;
+        }
+    }
+
+    .image-render-container {
+
+        .image-item {
+
+            .image-render-option {
+                display: none;
+            }
+        }
+    }
+
+
+}
+
+.popover-wrapper {
+
+    .ant-popover-inner {
+        margin-top: 4px;
+        padding: 4px;
+        border-radius: 2px;
+        border: 1px solid #e2e6ed;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.form-item-title {
+    display: flex;
+    align-items: flex-start;
+}
+
+.index {
+    position: relative;
+    font-size: 14px;
+    top: 4px;
+}
+
+.required::after {
+    content: '*';
+    position: absolute;
+    left: -8px;
+    top: 0;
+    font-size: 12px;
+    color: #f00;
+}
+
+.form-item-input {
+    border: none;
+    border-bottom: 1px solid #fff;
+    border-radius: 0;
+
+    &:hover {
+        border-color: #dedede;
+    }
+
+    &:focus {
+        text-shadow: none;
+        border-bottom: 1px solid @primary-color;
+    }
+}
+
+.form-title {
+    font-weight: 600;
+}
+
+.hide-wrapper {
+    color: #aeb5c0;
+    padding: 6px 0 8px;
+
+    .hide-icon {
+        position: relative;
+        top: 2px;
+        color: #999;
+        font-size: 14px;
+        margin-right: 6px;
+    }
+}
+
+.question-description {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.question-image-wrapper {
+    padding-bottom: 16px;
+}
+
+.description-input {
+    font-size: 12px;
+    padding: 4px 2px;
+    min-height: 26px !important;
+}
+
+.mult-input {
+    margin-top: 6px;
+}
+
+/* 下右边其它操作样式 */
+.form-item-options {
+    display: none;
+    text-align: right;
+    color: rgba(0, 0, 0, 0.65);
+
+    >div {
+        vertical-align: middle;
+        display: inline-block;
+        margin-left: 14px;
+    }
+
+    .setting-type {
+        font-size: 10px;
+        color: #677182;
+        padding: 3px 8px;
+        background: rgba(25, 55, 88, 0.08);
+        border-radius: 2px;
+
+        .type-text {
+            display: inline-block;
+            font-size: 12px;
+        }
+
+        .caret-icon {
+            margin-left: 6px;
+        }
+    }
+
+    .setting-required {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 0;
+
+        >span {
+            display: inline-block;
+            margin-right: 6px;
+        }
+    }
+
+    .setting-delete,
+    .setting-other {
+        font-size: 14px;
+    }
+}
+
+.line {
+    width: 2px;
+    height: 12px;
+    margin: 0 14px;
+    transform: scale(0.5, 1);
+    background-color: #e2e6ed;
+}
+
+.cascader-line {
+    margin: 0 8px;
+}
+
+.split-add {
+    width: 2px;
+    height: 12px;
+    margin: 0 12px;
+    transform: scale(0.5, 1);
+    background-color: @primary-color;
+}
+
+.setting-component-content,
+.setting-other-content {
+
+    li {
+        position: relative;
+        height: 34px;
+        line-height: 34px;
+        padding: 0 10px;
+        font-size: 12px;
+        color: #3d4757;
+        list-style: none;
+        cursor: pointer;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+
+        &:hover {
+            background-color: #f2f3f5;
+        }
+    }
+}
+
+.setting-component-content {
+    width: 120px;
+
+    li {
+        padding: 0 10px 0 48px;
+    }
+}
+
+.checked-tag-icon {
+    position: absolute;
+    left: 12px;
+    top: 11px;
+    font-size: 12px;
+    color: @primary-color;
+}
+
+.setting-other-content {
+    width: 160px;
+
+    li {
+        padding: 0 16px;
+    }
+
+    .arrow-right-icon {
+        position: absolute;
+        right: 6px;
+        top: 9px;
+    }
+}
+
+.date-type-content {
+    width: 180px;
+}
+
+.date-item {
+    padding: 0 0 0 36px !important;
+    letter-spacing: 15px;
+}
+
+/* 输入框组件样式 */
+
+.placeholder-info {
+    height: 34px;
+    line-height: 34px;
+    color: #aeb5c0;
+    margin-top: 8px;
+    padding-bottom: 6px;
+    box-sizing: content-box;
+    border-bottom: 1px dashed #e2e6ed;
+    cursor: default;
+}
+
+.multipline {
+    height: 58px;
+    padding-left: 10px;
+    border: 1px solid #e2e6ed;
+}
+
+.form-item-setting {
+    display: none;
+    align-items: center;
+    height: 40px;
+    color: @primary-color;
+
+    .setting-block {
+        display: inline-flex;
+        align-items: center;
+        min-height: 20px;
+
+        .icon-block {
+            margin-right: 6px;
+        }
+
+        .multiple-checkbox {
+            margin-left: 6px;
+        }
+    }
+}
+
+.rate-color {
+    margin: 6px 0;
+
+    .anticon-star {
+        color: #c2c2c2;
+    }
+}
+
+/* 选择题布局样式 */
+.select-dragging {
+    max-height: 64px;
+    overflow: hidden;
+}
+
+.select-option {
+    position: relative;
+    padding-bottom: 10px;
+
+    .select-option-item-move {
+        position: absolute;
+        top: 1px;
+        left: -28px;
+        padding: 4px 6px;
+        text-align: center;
+        z-index: 200;
+        visibility: hidden;
+        cursor: move;
+
+        >img {
+            display: block;
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .select-option-item {
+        display: flex;
+        align-items: start;
+
+        .select-item-index {
+            position: relative;
+            top: 7px;
+            margin-right: 6px;
+
+            img {
+                display: block;
+                width: 14px;
+                height: 14px;
+            }
+
+            .select-qs-number {
+                position: relative;
+                top: -4px;
+                display: inline-block;
+                width: 14px;
+                font-size: 14px;
+                line-height: 20px;
+            }
+        }
+
+        .select-item-detail {
+            flex: 1;
+
+            .select-item-title {
+                display: flex;
+
+                &:hover {
+                    .select-item-detail-setting {
+
+                        .add-text {
+                            visibility: visible;
+                        }
+                    }
+                }
+
+                .setting-other {
+                    flex: 1;
+                    display: flex;
+                    align-items: flex-start;
+                    padding: 4px 2px;
+                    border-bottom: 1px solid #e2e6ed;
+                    cursor: default;
+
+                    .other-title-input {
+                        max-width: calc(100% - 82px);
+                        white-space: pre-wrap;
+                    }
+
+                    .other-input {
+                        padding-left: 10px;
+                        color: #ccc;
+                    }
+                }
+
+                .option-input {
+
+                    &:focus+.select-item-detail-setting {
+
+                        .add-text {
+                            visibility: visible;
+                        }
+                    }
+                }
+
+                .select-item-detail-setting {
+                    display: none;
+                    line-height: 28px;
+                    text-align: right;
+                    max-width: 190px;
+                    min-width: 136px;
+
+                    .add-text {
+                        visibility: hidden;
+                        display: inline-block;
+                        margin-right: 10px;
+                    }
+
+                    .delete-select-item {
+                        color: #666;
+                    }
+                }
+
+                .set-min-width {
+                    min-width: 80px !important;
+                }
+            }
+
+            .jump-info-text {
+                padding-top: 8px;
+                line-height: 20px;
+                color: #aeb5c0;
+            }
+        }
+    }
+}
+
+.bottom-option {
+    padding-bottom: 0;
+}
+
+/* 日期组件样式 */
+.date-text-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    >span {
+        margin-left: 10px;
+        letter-spacing: 16px;
+    }
+}
+
+.date-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+
+    >span {
+
+        &:first-of-type {
+            font-size: 16px;
+            margin-right: 4px;
+            color: @primary-color;
+        }
+    }
+}
+
+/* 层级联动 */
+.cascader-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 4px;
+
+    .cascader-item {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 32px;
+        color: #aeb5c0;
+        padding-left: 8px;
+        padding-right: 8px;
+        margin-right: 12px;
+        border-radius: 4px;
+        border: 1px solid #e2e6ed;
+
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+
+        .delete-area-item {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+.cascader-info {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 0;
+    padding-bottom: 0;
+
+    .local-wrapper {
+        display: flex;
+        align-items: center;
+
+        .local-text {
+            color: #666;
+            margin-right: 6px;
+        }
+
+        >div {
+            margin: 0 10px;
+        }
+    }
+}
+
+
+/* 选中聚焦显示样式 */
+.question-content-actived {
+
+    .select-option {
+
+        &:hover {
+
+            .select-option-item-move {
+                visibility: visible !important;
+            }
+        }
+    }
+
+    .form-item-options {
+        display: block !important;
+    }
+
+    .form-item-setting {
+        display: flex !important;
+    }
+
+    .select-item-detail-setting {
+        display: block !important;
+    }
+
+    .image-render-container {
+
+        .image-item {
+
+            &:hover {
+                .image-render-option {
+                    display: block !important;
+                }
+            }
+        }
+    }
+}

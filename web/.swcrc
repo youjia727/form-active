@@ -1,0 +1,25 @@
+{
+  "jsc": {
+    "parser": { 
+      // 语法,支持ecmascript和typescript 
+      "syntax": "ecmascript", 
+      // 是否解析jsx，对应插件 @babel/plugin-transform-react-jsx 
+      "jsx": false, 
+      // 动态加载 等同于 @babel/plugin-syntax-dynamic-import 
+      "dynamicImport": true, 
+      // 装饰器 等同于 @babel/plugin-syntax-decorators 
+      "decorators": false, 
+      //顶层await 等同于@babel/plugin-syntax-top-level-await 
+      "topLevelAwait": false, 
+      "importMeta": false
+      },
+    // 编译目标 
+    "target": "es5", 
+    // 等同babel-preset-env的松散配置 
+    "loose": false, 
+    // 输出代码可能依赖于辅助函数来支持目标环境。
+    "externalHelpers": false
+  }, 
+  // 压缩代码 
+  "minify": false
+}

@@ -1,0 +1,11 @@
+.not-find {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 60px 0 80px;
+	min-height: 500px;
+	width: 100%;
+	height: 100vh;
+	background-color: #fff;
+}

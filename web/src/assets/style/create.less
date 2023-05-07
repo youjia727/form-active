@@ -1,0 +1,223 @@
+.create-form-page {
+    padding-top: 14px;
+}
+
+.create-form-wrapper {
+    display: flex;
+    align-items: self-start;
+    padding: 0 16px;
+    max-width: 1340px;
+    margin: 0 auto;
+}
+
+/* 左侧菜单显示布局 */
+.sider-menu {
+    position: sticky;
+    top: 66px;
+    width: 242px;
+    min-width: 242px;
+
+    .sider-inner-wrapper {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-height: 488px;
+        height: calc(100vh - 110px);
+    }
+
+    .menu-box {
+        padding: 16px 16px;
+        background-color: #fff;
+
+        .classify-config {
+            margin-bottom: 20px;
+
+            .component-edit {
+                position: relative;
+
+                .option-component-btn {
+                    position: absolute;
+                    right: 0;
+                    top: 1px;
+                    font-size: 12px;
+                }
+            }
+
+            h3 {
+                line-height: 20px;
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
+
+            .component-render {
+                display: flex;
+                flex-wrap: wrap;
+                -webkit-box-pack: justify;
+                justify-content: space-between;
+
+                li {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: calc((100% - 14px)/2);
+                    height: 30px;
+                    margin: 6px 0;
+                    padding: 0 10px;
+                    font-size: 12px;
+                    border-radius: 4px;
+                    border: 1px solid #dedede;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    cursor: pointer;
+
+                    .icon {
+                        font-size: 14px;
+                        margin-right: 6px;
+                    }
+                }
+
+                .common-li {
+                    justify-content: center;
+
+                    .mine-component-item {
+                        display: inline-block;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+
+                .no-setting {
+                    padding-top: 6px;
+                    font-size: 12px;
+                    padding-left: 15px;
+                }
+            }
+        }
+    }
+}
+
+/* 中间form内容 */
+.form-content {
+    width: calc(100% - 500px);
+    min-height: calc(100vh - 114px);
+    min-width: 200px;
+    margin: 0 14px;
+    background-color: #fff;
+}
+
+.form-config-page {
+    padding: 40px 52px 60px;
+    box-sizing: border-box;
+
+    /* 结束语分隔线 */
+    .form-bottom {
+
+        .ant-divider .ant-divider-inner-text {
+            padding: 0;
+        }
+
+        .form-bottom-btn {
+            display: inline-block;
+            height: 32px;
+            color: rgba(0, 0, 0, 0.65);
+            line-height: 32px;
+            font-size: 14px;
+            padding: 0 20px;
+            border-radius: 20px;
+
+            &:hover {
+                background-color: #f8f8f8;
+            }
+
+            .btn-edit-icon {
+                font-size: 12px;
+                margin-left: 6px;
+            }
+        }
+    }
+}
+
+/* 右侧发布配置 */
+
+.release-config {
+    position: sticky;
+    top: 66px;
+    width: 280px;
+    min-width: 280px;
+
+    .right-sider-config {
+        padding: 20px 16px;
+        margin-bottom: 16px;
+        background-color: #fff;
+
+        /* 每项的布局样式 */
+        .right-sider-config-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 26px;
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+
+            .text-label {
+                margin-right: 16px;
+            }
+
+            .ant-picker {
+                flex: 1;
+            }
+        }
+    }
+
+    /* 预览创建 */
+    .operate-setting {
+        width: 100%;
+
+        >div {
+            width: 50%;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.preview-drawer-container {
+
+    .ant-drawer-content-wrapper {
+        box-shadow: none;
+    }
+}
+
+.preview-drawer-box {
+    background-color: #f5f5f5;
+
+    .ant-drawer-wrapper-body {
+        display: block;
+    }
+
+    .ant-drawer-header {
+        padding: 0;
+    }
+
+    .ant-drawer-header-title {
+        justify-content: flex-end;
+        height: 52px;
+        line-height: 52px;
+        padding: 0 20px;
+        background-color: #fff;
+    }
+
+    .ant-drawer-body {
+        padding: 14px 0;
+        min-height: calc(100vh - 53px);
+        background-color: #f5f5f5;
+        overflow: initial;
+    }
+}

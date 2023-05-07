@@ -1,0 +1,96 @@
+.image-render-container {
+    text-align: center;
+    margin: 0 auto;
+
+    .image-render-block {
+        margin-top: 8px;
+
+        &:first-of-type {
+            margin-top: 12px;
+        }
+    }
+
+    .image-item {
+        position: relative;
+        display: inline-block;
+        margin: 0 auto;
+
+        >img {
+            display: block;
+            max-width: 440px;
+            min-width: 100px;
+            width: 100%;
+            height: auto;
+            max-height: 440px;
+        }
+
+        .image-render-option {
+            display: none;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            text-align: center;
+
+
+            .image-render-option-item {
+                display: inline-block;
+                width: 52px;
+                height: 24px;
+                line-height: 24px;
+                font-size: 12px;
+                margin-left: 6px;
+                color: #fff;
+                background-color: rgba(0, 0, 0, 0.4);
+                transition: 0.2s;
+                cursor: pointer;
+
+                &:first-of-type {
+                    margin-left: 0;
+                }
+
+                &:hover {
+                    color: #ccc;
+                    background-color: rgba(0, 0, 0, 0.6);
+                }
+
+                .imgage-option-icon {
+                    font-size: 13px;
+                    margin-right: 4px;
+                }
+            }
+        }
+
+        &:hover .image-render-option {
+            display: block;
+        }
+    }
+
+    .crop-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 16px;
+        height: 420px;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .cutting-image {
+        display: block;
+        max-width: 720px;
+        max-height: 420px;
+        min-width: 100px;
+        min-height: 100px;
+        width: auto;
+        height: auto;
+        cursor: auto;
+    }
+
+    .cutting-success {
+        padding: 24px 0 4px;
+        text-align: center;
+
+        button {
+            width: 160px;
+        }
+    }
+}

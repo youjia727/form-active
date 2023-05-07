@@ -1,0 +1,36 @@
+.sider-wrapper {
+	position: sticky !important;
+	height: calc(100vh - 101px);
+	top: 1px;
+	z-index: 10;
+}
+
+.ant-menu-inline>.ant-menu-submenu>.ant-menu-submenu-title,
+.ant-menu-inline .ant-menu-item {
+	height: 52px;
+	line-height: 52px;
+}
+
+.ant-menu-light.ant-menu-root.ant-menu-inline {
+	border-right: 0px;
+}
+
+.ant-tabs>.ant-tabs-nav {
+	display: none;
+}
+
+.form-option-item {
+	display: inline-block;
+	padding: 2px 6px;
+	cursor: pointer;
+}
+
+.trash-option-item {
+	display: inline-block;
+	font-size: 12px;
+	padding: 4px 12px 2px;
+	border-radius: 4px;
+	color: #555;
+	border: 1px solid #dedede;
+	cursor: pointer;
+}
