@@ -1,5 +1,5 @@
 .rule-wrapper {
-    padding: 16px 0;
+    padding-top: 16px;
 }
 
 .rule-boxs {
@@ -14,7 +14,7 @@
 
     input {
         flex: 1;
-        margin-left: 14px;
+        margin-left: 12px;
 
         &:first-of-type {
             margin-left: 0;
@@ -312,9 +312,13 @@
         }
 
         .cascader-select-wrapper {
-            max-height: 314px;
+            max-height: 310px;
             padding: 8px 10px 0;
             overflow: auto;
+        }
+
+        .last-cascader-select {
+            padding-right: 12px;
         }
 
         .cascader-title {
@@ -371,13 +375,14 @@
 
         .cascader-add-wrapper {
             font-size: 12px;
-            height: 32px;
-            line-height: 32px;
+            padding: 0 10px;
+            height: 36px;
+            line-height: 36px;
             color: @primary-color;
             text-align: center;
 
             >div {
-                display: inline-block;
+                // display: inline-block;
 
                 .add-cascader-item-icon {
                     margin-right: 6px;

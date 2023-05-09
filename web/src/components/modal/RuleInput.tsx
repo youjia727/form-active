@@ -132,7 +132,7 @@ function RuleInput(props: propTypes) {
 					))}
 				</div>
 				{newRules.length >= 6 ? null :
-					<div style={{ textAlign: 'center', paddingTop: 10 }}>
+					<div style={{ textAlign: 'center', paddingBottom: 10 }}>
 						<Button onClick={handleAddRule} icon={<PlusOutlined />}>添加验证规则</Button>
 					</div>
 				}

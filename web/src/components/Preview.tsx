@@ -10,7 +10,7 @@ import CascaderList from '@/components/CascaderList';
 import utils from '@/assets/utils';
 import dayjs from 'dayjs';
 import { useUpdate } from '@/hooks/useUpdate';
-import { baseProps, optionProps, objProps } from '@/assets/utils/formConfig/editorConfig';
+import { baseProps, optionProps, objProps, cascaderModeTypes } from '@/assets/utils/formConfig/editorConfig';
 import '@/assets/style/preview.less';
 
 const { TextArea } = Input;
@@ -484,8 +484,11 @@ function Preview(props: propTypes) {
 		validateFormItem(attr, arr);
 	};
 	/* 层级联动的文本占位符提示 */
-	const cascaderPlaceholderCallback = (cascaderMode: Array<{ label: string, placeholder: string }>) => {
-		const placeholderList = cascaderMode.map(item => item.placeholder);
+	const cascaderPlaceholderCallback = (cascaderMode: Array<cascaderModeTypes>) => {
+		let placeholderList: Array<string> = [];
+		cascaderMode.forEach(item => {
+			item.text.trim().length ? placeholderList.push(item.text) : null;
+		})
 		return placeholderList.join('/');
 	};
 	/* 点击提交数据 */
@@ -731,8 +734,8 @@ function Preview(props: propTypes) {
 							{item.type === 'cascader' ?
 								<div className='space-wrapper'>
 									<CascaderList
-										column={item.cascaderMode.length}
-										options={options}
+										column={item.levelCount}
+										options={item.tag === 'address' ? options : item.options}
 										checkedValue={submitValues[item.id]?.value}
 										onFinish={(checkedList: Array<string>) => validateFormItem(item.id, checkedList)}
 										placeholder={cascaderPlaceholderCallback(item.cascaderMode)}

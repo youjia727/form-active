@@ -39,7 +39,7 @@ function View(props: propsTypes) {
 	return (
 		<>
 			{/* multiline 代表多行输入 */}
-			<div className={`placeholder-info ${tag === 'textarea' ? 'multiline' : ''}`}>填写者回答区</div>
+			<div className={`placeholder-info ${tag === 'textarea' ? 'multiple-line' : ''}`}>填写者回答区</div>
 			<div className="form-item-setting">
 				<div className='setting-block opacity' onClick={() => setOpen(true)}>
 					<PlusCircleOutlined className='icon-block' />

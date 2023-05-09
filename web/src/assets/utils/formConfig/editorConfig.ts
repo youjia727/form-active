@@ -34,7 +34,7 @@ export interface baseProps {
 
 export interface cascaderModeTypes {
     label: string,
-    placeholder: string
+    text: string
 }
 
 /* 基本信息的配置 */
@@ -104,18 +104,18 @@ const cascaderInit = {
     levelCount: 3, //层级数
     cascaderMode: [{
         label: 'levelOne',
-        placeholder: ''
+        text: ''
     }, {
         label: 'levelTwo',
-        placeholder: ''
+        text: ''
     }, {
         label: 'levelThree',
-        placeholder: ''
+        text: ''
     }],
-    setDetail: true,
+    setDetail: false,
     details: {
         label: 'details',
-        placeholder: '详细内容输入区'
+        text: '填写者输入区'
     },
     // 配置option的属性
     fieldNames: {
@@ -222,7 +222,7 @@ export const baseCompList: Array<baseCompProps> = [{
     icon: 'a-ziyuan22',
     tag: 'date'
 }, {
-    label: '层级联动',
+    label: '级联选择',
     icon: 'guanlian',
     tag: 'cascader'
 }];
@@ -290,19 +290,19 @@ export const templateCompList = [{
         title: '地址',
         cascaderMode: [{
             label: 'province',
-            placeholder: '省/自治区/直辖市'
+            text: '省/自治区/直辖市'
         }, {
             label: 'city',
-            placeholder: '市'
+            text: '市'
         }, {
             label: 'district',
-            placeholder: '区/县'
+            text: '区/县'
         }],
         options: [], //配置数据
-        setDetail: true, //是否设置其他输入
+        setDetail: false, //是否设置其他输入
         details: {
             label: 'address',
-            placeholder: '详细地址'
+            text: '详细地址'
         }
     }
 }];

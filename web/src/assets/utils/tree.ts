@@ -1,14 +1,14 @@
 export const options = [{
-    value: '1',
+    value: '',
     text: '',
     children: [{
-        value: '2',
+        value: '',
         text: '',
         children: [{
-            value: '3',
+            value: '',
             text: '',
             children: [{
-                value: '4',
+                value: '',
                 text: '',
             }, {
                 value: '',

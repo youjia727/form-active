@@ -66,11 +66,11 @@ export function useReactive(data: objProps) {
 
 /* 普通更新数据 */
 export function useUpdate() {
-    const [_, update] = useState<number>(0);
+    const [_, update] = useState(0);
 
     function updateCallback(callback: Function) {
         callback();
-        update(Date.now());
+        update(+new Date());
     };
     return updateCallback;
 };

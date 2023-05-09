@@ -1,30 +1,21 @@
 import { memo } from 'react';
 import { useUpdate } from '@/hooks/useUpdate';
-import {
-	PlusCircleOutlined, EnvironmentOutlined,
-	CloseOutlined, CaretDownOutlined
-} from '@ant-design/icons';
-import { baseProps } from '@/assets/utils/formConfig/editorConfig';
-
+import { PlusCircleOutlined, EnvironmentOutlined, CloseOutlined, CaretDownOutlined } from '@ant-design/icons';
+import { baseProps, cascaderModeTypes } from '@/assets/utils/formConfig/editorConfig';
 
 type propsType = {
 	item: baseProps
 }
 
-type cascaderObj = {
-	label: string,
-	placeholder: string
-}
-
 const cascaderList = [{
 	label: 'province',
-	placeholder: '省/自治区/直辖市'
+	text: '省/自治区/直辖市'
 }, {
 	label: 'city',
-	placeholder: '市'
+	text: '市'
 }, {
 	label: 'district',
-	placeholder: '区/县'
+	text: '区/县'
 }];
 
 /* 层级联动 */
@@ -49,13 +40,13 @@ function AddressCascader(props: propsType) {
 		})
 	};
 	/* 添加层级的文字提示 */
-	const addressTextCallback = (cascaderItem: { label: string, placeholder: string }) => {
+	const addressTextCallback = (cascaderItem: cascaderModeTypes) => {
 		const idx = cascaderList.findIndex(el => el.label === cascaderItem.label);
-		return cascaderList[idx + 1].placeholder;
+		return cascaderList[idx + 1].text;
 	};
 	/* 添加层级 */
 	const handleAddCascader = () => {
-		const cascaderItem = item.cascaderMode[item.cascaderMode.length - 1];
+		const cascaderItem: cascaderModeTypes = item.cascaderMode[item.cascaderMode.length - 1];
 		const idx = cascaderList.findIndex(el => el.label === cascaderItem.label);
 		update(() => {
 			item.cascaderMode.push(cascaderList[idx + 1]);
@@ -65,16 +56,16 @@ function AddressCascader(props: propsType) {
 	return (
 		<>
 			<div className='cascader-wrapper'>
-				{item.cascaderMode.map((cascader: cascaderObj, idx: number) => (
+				{item.cascaderMode.map((cascader: cascaderModeTypes, idx: number) => (
 					<div className='cascader-item' key={cascader.label}>
-						<span>{cascader.placeholder}</span>
+						<span>{cascader.text}</span>
 						<div className='delete-area-item'>
 							<CaretDownOutlined />
 							{idx + 1 === item.cascaderMode.length && idx !== 0 ?
-								<>
+								<div className='delete-area-btn'>
 									<div className='line cascader-line'></div>
 									<CloseOutlined onClick={() => handleDeleteCascader(idx)} className='hover-color' title='删除' />
-								</>
+								</div>
 								: null
 							}
 						</div>
@@ -83,7 +74,7 @@ function AddressCascader(props: propsType) {
 			</div>
 			{item.setDetail ?
 				<div className="placeholder-info cascader-info">
-					<span>{item.details.placeholder}</span>
+					<span>{item.details.text}</span>
 					<div className='local-wrapper'>
 						{item.tag === 'address' ?
 							<>

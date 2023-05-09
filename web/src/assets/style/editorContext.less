@@ -258,7 +258,7 @@
     cursor: default;
 }
 
-.multipline {
+.multiple-line {
     height: 58px;
     padding-left: 10px;
     border: 1px solid #e2e6ed;
@@ -476,9 +476,14 @@
             margin-right: 0;
         }
 
-        .delete-area-item {
+        .delete-area-item,
+        .delete-area-btn {
             display: flex;
             align-items: center;
+        }
+        
+        .delete-area-btn {
+            display: none;
         }
     }
 }
@@ -492,7 +497,7 @@
     padding-bottom: 0;
 
     .local-wrapper {
-        display: flex;
+        display: none;
         align-items: center;
 
         .local-text {
@@ -540,6 +545,23 @@
                 .image-render-option {
                     display: block !important;
                 }
+            }
+        }
+    }
+
+    .cascader-info {
+
+        .local-wrapper {
+            display: flex;
+        }
+    }
+
+    .cascader-wrapper {
+
+        .cascader-item {
+
+            .delete-area-btn {
+                display: flex;
             }
         }
     }

@@ -1,5 +1,5 @@
 import { useState, memo, useMemo, useEffect } from 'react';
-import { Popover, Input, Cascader } from 'antd';
+import { Popover, Cascader } from 'antd';
 import { CheckOutlined, CaretDownOutlined, CloseCircleFilled } from '@ant-design/icons';
 import '@/assets/style/cascaderList.less';
 
@@ -77,7 +77,6 @@ function CascaderList(props: propTypes) {
 		return treeToList(options);
 	}, [])
 
-
 	// 控制弹框显示
 	const [open, setOpen] = useState(false);
 	// 当前选中数据
@@ -130,6 +129,10 @@ function CascaderList(props: propTypes) {
 		if (!checkedList.length || tabKey === 0) return options;
 		return allCascaderList.find(item => item.text === checkedList[tabKey - 1])?.children;
 	};
+	/* 当前选中信息 */
+	const checkSelectOption = (text: string, key: number) => {
+		return checkedList[key] === text;
+	};
 	/* 完成全部选择 */
 	const onSelectCascaderFinish = (selectValues: Array<string>) => {
 		setOpen(false);
@@ -170,9 +173,9 @@ function CascaderList(props: propTypes) {
 			<ul className='cascader-list-wrapper'>
 				{renderCallback(checkedList, activeKey)?.map((item: objTypes) => (
 					<li key={item.value} onClick={(e) => handleSelectCascader(e, item.text)}
-						className={`${checkedList.includes(item.text) ? 'checked-cascader' : ''} cursor`}
+						className={`${checkSelectOption(item.text, activeKey) ? 'checked-cascader' : ''} cursor`}
 					>
-						{checkedList.includes(item.text) ? <CheckOutlined className='checked-cascader-icon primary-color' /> : null}
+						{checkSelectOption(item.text, activeKey) ? <CheckOutlined className='checked-cascader-icon primary-color' /> : null}
 						<span>{item.text}</span>
 					</li>
 				))}
@@ -197,7 +200,7 @@ function CascaderList(props: propTypes) {
 						allowClear
 						open={false}
 						value={renderCheckedText}
-						placeholder={placeholder ?? '请选择'}
+						placeholder={placeholder || '请选择'}
 						displayRender={() => checkedList.join(separator)}
 						suffixIcon={<CaretDownOutlined />}
 						clearIcon={<CloseCircleFilled onClick={handleClear} />}

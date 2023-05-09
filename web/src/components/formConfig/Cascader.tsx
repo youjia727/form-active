@@ -1,33 +1,12 @@
 import { useState, memo } from 'react';
 import { useUpdate } from '@/hooks/useUpdate';
-import {
-	PlusCircleOutlined, CloseOutlined, CaretDownOutlined, EditOutlined
-} from '@ant-design/icons';
-import { baseProps, objProps } from '@/assets/utils/formConfig/editorConfig';
+import { PlusCircleOutlined, CloseOutlined, CaretDownOutlined, EditOutlined } from '@ant-design/icons';
+import { baseProps, cascaderModeTypes, objProps } from '@/assets/utils/formConfig/editorConfig';
 import CascaderConfig from '../modal/CascaderConfig';
-
 
 type propsType = {
 	item: baseProps
 }
-
-type cascaderObj = {
-	label: string,
-	placeholder: string
-}
-
-/* 下拉选择的内容 */
-const options = [{
-	value: 1,
-	label: '一级联动'
-}, {
-	value: 2,
-	label: '二级联动'
-}, {
-	value: 3,
-	label: '三级联动'
-}]
-
 
 /* 层级联动 */
 function Cascader(props: propsType) {
@@ -44,17 +23,30 @@ function Cascader(props: propsType) {
 			item.setDetail = visible;
 		})
 	};
+	/* placeholder 占位提示语 */
+	const placeholderCallback = (tipList: Array<cascaderModeTypes>) => {
+		const tipsText: Array<string> = [];
+		tipList.forEach(tips => {
+			tips.text.trim().length ? tipsText.push(tips.text) : null;
+		})
+		return tipsText.length ? '（' + tipsText.join(' / ') + '）' : '';
+	};
 	/* 编辑层级联动配置的回调函数 */
-	const cascaderCallback = (visible: boolean, cascaderRule?: objProps) => {
-		cascaderRule ? Object.assign(item, cascaderRule) : null;
-		setOpen(false)
+	const cascaderCallback = (visible: boolean, config?: objProps) => {
+		console.log(config)
+		if (config) {
+			item.options = config.options;
+			item.cascaderMode = config.title;
+			item.levelCount = config.count;
+		}
+		setOpen(visible);
 	};
 
 	return (
 		<>
 			<div className='cascader-wrapper'>
 				<div className='cascader-item'>
-					<span>填写者选择区</span>
+					<span>填写者选择区{placeholderCallback(item.cascaderMode)}</span>
 					<div className='delete-area-item'>
 						<CaretDownOutlined />
 					</div>
@@ -62,7 +54,7 @@ function Cascader(props: propsType) {
 			</div>
 			{item.setDetail ?
 				<div className="placeholder-info cascader-info">
-					<span>{item.details.placeholder}</span>
+					<span>{item.details.text}</span>
 					<div className='local-wrapper'>
 						<CloseOutlined onClick={() => handleSetDetail(false)} className='hover-color' title='删除' />
 					</div>
@@ -73,13 +65,12 @@ function Cascader(props: propsType) {
 					<EditOutlined className='icon-block' />
 					<span>编辑选项</span>
 				</div>
-				{!(item.cascaderMode.length >= 3) && !item.setDetail ? <div className='split-add'></div> : null}
 				{!item.setDetail ?
 					<>
 						<div className='split-add'></div>
 						<div onClick={() => handleSetDetail(true)} className='setting-block opacity'>
 							<PlusCircleOutlined className='icon-block' />
-							<span>添加详细</span>
+							<span>添加详细输入</span>
 						</div>
 					</> : null
 				}
