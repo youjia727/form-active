@@ -223,5 +223,4 @@ function CascaderConfig(props: propTypes) {
 		</Modal>
 	)
 }
-
 export default CascaderConfig;

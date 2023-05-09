@@ -13,7 +13,7 @@ function View() {
 		<App>
 			{/* outlet 占位符，类似于窗口， 有点像vue中的router-view */}
 			{location.pathname === '/login' ?
-				<LoginLayout>{outlet}</LoginLayout> : 
+				<LoginLayout>{outlet as React.ReactElement<any, any>}</LoginLayout> : 
 				<>{outlet}</>
 			}
 		</App>
