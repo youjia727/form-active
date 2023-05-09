@@ -1,0 +1,80 @@
+.login_layout {
+	position: relative;
+	height: 100vh;
+	background: url('/image/lrenting.jpeg') no-repeat;
+	background-size: 100% 100%;
+	background-position: bottom center;
+}
+
+.content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	margin: 0 auto;
+}
+
+/* 登录注册内容 */
+
+.inner {
+	width: calc(100% - 32px);
+	max-width: 376px;
+	padding: 32px 30px 6px;
+	position: relative;
+	margin: 0 auto;
+	background-color: #fff;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+/* 下边联系方式 */
+
+.contact {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	padding: 10px 16px;
+	box-sizing: border-box;
+}
+
+.contact p {
+	color: #fff;
+	font-size: 12px;
+	line-height: 24px;
+	text-shadow: 0 0 1px #0000003d;
+}
+
+.contact p a {
+	display: inline-block;
+}
+
+.vline {
+	position: relative;
+	display: inline-block;
+	width: 1px;
+	margin: 0 5px;
+}
+
+.vline::after {
+	content: ' ';
+	position: absolute;
+	width: 1px;
+	top: -9px;
+	left: 0;
+	height: 10px;
+	background-color: #fff;
+}
+
+@media (max-width: 1600px) {
+	.login_layout {
+		background-size: cover;
+	}
+}
+
+@media (max-width: 640px) {
+	.login_layout {
+		background-position: center;
+	}
+}

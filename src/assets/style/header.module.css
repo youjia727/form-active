@@ -1,0 +1,95 @@
+/* 头部内容 */
+.header_wrapper {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 16px !important;
+	height: 52px !important;
+	line-height: 52px !important;
+	background: #fff !important;
+	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.08) !important;
+	z-index: 100;
+}
+
+.logo_wrapper {
+	display: flex;
+	align-items: center;
+}
+
+.logo_wrapper h2 {
+	margin-left: 10px;
+	font-size: 18px;
+}
+
+.add_btn {
+	margin-left: 36px;
+	font-size: 12px;
+}
+
+.user_wrapper {
+	line-height: 52px;
+} 
+
+.user_menu_wrapper {
+	top: 53px !important;
+}
+
+.user {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+}
+
+.user span {
+	display: inline-block;
+	margin-right: 12px;
+}
+
+.user img {
+	width: 28px;
+	height: 28px;
+	border-radius: 100%;
+}
+
+.menu {
+	/* width: 280px; */
+	width: 240px;
+	box-shadow: 1px 2px 14px rgba(0, 0, 0, .11);
+	background-color: #f2f5fa;
+}
+
+.menu li {
+	padding: 10px 16px;
+	line-height: 22px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	box-sizing: border-box;
+	background: #fff;
+}
+
+.userinfo {
+	padding: 10px 16px;
+	box-sizing: border-box;
+	background-color: #fff;
+}
+
+.name {
+	font-size: 16px;
+	margin-bottom: 6px;
+}
+
+.user_id {
+	font-size: 12px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.link_logout {
+	margin-top: 6px;
+}

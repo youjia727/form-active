@@ -1,0 +1,240 @@
+// 公共的样式
+html,
+body {
+	padding: 0;
+	margin: 0;
+	color: #333;
+	font-size: 14px;
+	min-width: 756px;
+	font-family: Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	list-style: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+dl {
+	margin: 0;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+a:hover {
+	color: @primary-color;
+}
+
+.primary-color,
+.active,
+a[aria-current="page"] {
+	color: @primary-color;
+}
+
+.cursor {
+	cursor: pointer;
+}
+
+.default {
+	cursor: default;
+}
+
+.hover-color:hover {
+	color: @primary-color !important;
+	cursor: pointer;
+}
+
+.opacity:hover {
+	opacity: 0.7;
+	transition: 0.2s;
+	cursor: pointer;
+}
+
+.border-color:hover {
+	border-color: @primary-color !important;
+	cursor: pointer;
+}
+
+.hover-error:hover {
+	color: @error-color !important;
+}
+
+.gray {
+	color: #999;
+}
+
+.disabled {
+	color: #999;
+	cursor: not-allowed;
+}
+
+
+.ant-message {
+	z-index: 1110;
+}
+
+.ant-form-item-explain-error {
+	font-size: 13px;
+}
+
+.ant-form-item {
+	margin-bottom: 26px;
+}
+
+.ant-layout .ant-layout-header .ant-dropdown-open {
+	color: @primary-color;
+}
+
+.ant-breadcrumb {
+	font-size: 15px;
+}
+
+.ant-empty .ant-empty-description {
+	color: #999;
+}
+
+.ant-input {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+// 登录样式重置
+.login .ant-form-item {
+	margin-bottom: 30px;
+}
+
+.login .ant-input-affix-wrapper {
+	padding: 8px 11px;
+}
+
+.login .ant-input-affix-wrapper .ant-input-prefix {
+	margin-right: 14px;
+}
+
+.login .ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-status-error) {
+	border-color: @primary-color !important;
+}
+
+.login .ant-input-affix-wrapper-focused:not(.ant-input-affix-wrapper-status-error) .login_icon {
+	color: @primary-color !important;
+}
+
+.login .ant-input-affix-wrapper-status-error .login_icon {
+	color: @error-color;
+}
+
+.login_icon {
+	color: #999;
+}
+
+.ant-card:not(.ant-card-bordered) {
+	box-shadow: none;
+}
+
+.ant-card .ant-card-head {
+	padding: 0 16px;
+}
+
+.ant-card .ant-card-body {
+	padding: 16px;
+}
+
+.ant-table-wrapper .ant-table-thead>tr>th::before {
+	background-color: transparent !important;
+}
+
+.ant-popconfirm .ant-popconfirm-description {
+	margin-bottom: 16px;
+}
+
+.ant-popconfirm .ant-popconfirm-buttons button {
+	font-size: 12px;
+}
+
+.ant-modal .ant-modal-title,
+.ant-modal-confirm .ant-modal-confirm-body .ant-modal-confirm-title {
+	font-weight: normal;
+}
+
+.ant-modal .ant-modal-footer .ant-btn+.ant-btn:not(.ant-dropdown-trigger),
+.ant-modal-confirm .ant-modal-confirm-btns .ant-btn+.ant-btn {
+	margin-left: 16px;
+}
+
+.ant-modal-confirm .ant-modal-confirm-body .ant-modal-confirm-title+.ant-modal-confirm-content {
+	margin-top: 24px;
+	margin-bottom: 10px;
+}
+
+// 滚动条样式
+.FreeScrollbar {
+	transition: 0.3s;
+}
+
+.FreeScrollbar-container {
+	padding-bottom: 0 !important;
+}
+
+.FreeScrollbar .FreeScrollbar-vertical-track {
+	border-left: 0 !important;
+	background-color: transparent !important;
+	width: 6px !important;
+	top: 2px !important;
+	right: 2px !important;
+	bottom: 2px !important;
+}
+
+.FreeScrollbar .FreeScrollbar-vertical-track>div {
+	display: none;
+	background-color: rgba(144, 147, 153, 0.3) !important;
+	border-radius: 4px !important;
+}
+
+.FreeScrollbar:hover .FreeScrollbar-vertical-track>div {
+	display: block !important;
+}
+
+/* 后台布局样式 */
+.layout-container {
+	min-height: calc(100vh - 96px);
+}
+
+/* 复选框样式 */
+.ant-checkbox-wrapper {
+	height: 14px;
+
+	.ant-checkbox {
+		transform: translate(0);
+
+		.ant-checkbox-inner {
+			width: 14px;
+			height: 14px;
+
+			&::after {
+				left: 16%;
+			}
+		}
+	}
+}

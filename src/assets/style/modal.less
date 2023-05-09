@@ -1,0 +1,520 @@
+.rule-wrapper {
+    padding-top: 16px;
+}
+
+.rule-boxs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rule-box {
+    display: flex;
+    align-items: center;
+
+    input {
+        flex: 1;
+        margin-left: 12px;
+
+        &:first-of-type {
+            margin-left: 0;
+        }
+    }
+
+    .end-text {
+        margin-left: 10px;
+    }
+}
+
+.rule-item {
+
+    >div {
+        margin-bottom: 20px;
+    }
+
+    .rule-icon {
+        margin-left: 10px;
+        color: #666;
+    }
+}
+
+/* 设置题目关联 */
+.checkbox-relevance-wrapper {
+    padding-top: 4px;
+
+    .notice {
+        line-height: 24px;
+    }
+
+    .table-box {
+        padding: 16px 0 10px;
+    }
+
+    .attch-table {
+        table-layout: fixed;
+        width: 100%;
+        margin: -1px 0;
+        border: 1px solid #e2e6ed;
+        border-collapse: collapse;
+        text-align: left;
+
+        td {
+            min-height: 33px;
+            box-sizing: border-box;
+        }
+
+        thead {
+            td {
+                color: #3d4757;
+                font-weight: 500;
+                background-color: #f5f7f9;
+                height: 33px;
+                padding: 0 14px;
+                font-weight: 600;
+                // text-align: center;
+                border: 1px solid #e2e6ed;
+            }
+        }
+
+        tbody {
+            td {
+                color: #767c85;
+                font-size: 12px;
+                border: 1px solid #e2e6ed;
+            }
+
+            .relevance-option-title {
+                padding: 8px 14px;
+            }
+
+            .attch-box {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                text-align: left;
+                padding: 5px 14px;
+                height: 26px;
+                line-height: 26px;
+                height: 100%;
+                cursor: pointer;
+
+                .attch-select {
+                    width: 95%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+
+                    p {
+                        min-height: 20px;
+                        line-height: 20px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+
+                .caret-down-icon {
+                    font-size: 10px;
+                }
+            }
+        }
+    }
+}
+
+.relevance-check-wrapper {
+
+    .ant-popover-inner {
+        padding: 10px 12px !important;
+        border-radius: 2px;
+
+        .ant-popover-title {
+            font-weight: normal;
+        }
+    }
+}
+
+.relevance-component-content {
+    width: 290px;
+    box-sizing: border-box;
+
+    .ant-checkbox-group {
+        display: block;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .relevance-check-item {
+        margin-bottom: 8px;
+
+        .relevance-checkbox {
+            align-items: center;
+        }
+
+        .relevance-text {
+            position: relative;
+            top: -1px;
+            font-size: 12px;
+            color: #3d4757;
+        }
+    }
+
+    .relevance-foother {
+        margin-top: 8px;
+        padding: 6px 0 4px;
+        text-align: right;
+
+        button {
+            height: 28px;
+            font-size: 12px;
+        }
+    }
+}
+
+/* 限制多选题选择数量 */
+.checkbox-limit-wrapper {
+    padding: 0 0 20px;
+}
+
+
+.checkbox-limit-item {
+    margin-top: 26px;
+
+    .checkbox-select-limit {
+        width: 160px;
+        margin: 0 10px;
+    }
+}
+
+/* 设置标签 */
+.label-wrapper {
+    padding-top: 10px;
+
+    .mark-label-title {
+        margin-bottom: 6px;
+    }
+
+    mark {
+        color: @primary-color;
+        background-color: transparent;
+    }
+
+    .edit-label {
+        display: inline-block;
+        margin-left: 16px;
+    }
+
+    .label-box {
+
+        li {
+            position: relative;
+            display: inline-block;
+            margin: 6px 12px 6px 0;
+            font-size: 13px;
+            height: 30px;
+            color: #666;
+            border: 1px solid #dedede;
+            border-radius: 4px;
+            text-align: center;
+            transition: 0.2s;
+
+            &:not(.render-checked):hover {
+                color: @primary-color;
+                border-color: @primary-color;
+            }
+
+            .label-text {
+                display: inline-block;
+                padding: 2px 12px;
+                max-width: 160px;
+                line-height: 24px;
+                box-sizing: border-box;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .delete-label-icon {
+                position: absolute;
+                right: -7px;
+                top: -7px;
+                font-size: 13px;
+                color: #F20D0D;
+                background-color: #fff;
+                z-index: 10;
+            }
+        }
+
+        .checked-label {
+            color: @primary-color;
+            border-color: @primary-color;
+        }
+    }
+
+    .add-label-btn {
+        font-size: 13px;
+        margin-top: 10px;
+        height: 30px;
+        line-height: 14px;
+    }
+}
+
+.add-label-box {
+    padding: 10px 0;
+}
+
+/* 层级联动 */
+.cascader-container {
+    position: relative;
+
+    .select-cascader-level {
+        position: absolute;
+        bottom: -48px;
+        left: 0;
+
+        >span {
+            font-size: 12px;
+        }
+
+        >div {
+            margin: 0 10px;
+            text-align: center;
+        }
+
+        .ant-select-selector {
+            border-radius: 0;
+            box-shadow: none !important;
+        }
+    }
+}
+
+.select-cascader-level-popover {
+    text-align: center;
+}
+
+.cascader-config-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    margin-bottom: 20px;
+    padding: 8px;
+    background-color: #eff1f3;
+
+    .cascader-config-item {
+        width: 242px;
+        height: 346px;
+        background-color: #fff;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-right: 9px;
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+
+        .cascader-select-wrapper {
+            max-height: 310px;
+            padding: 8px 10px 0;
+            overflow: auto;
+        }
+
+        .last-cascader-select {
+            padding-right: 12px;
+        }
+
+        .cascader-title {
+            font-size: 15px;
+            font-weight: 600;
+            padding-left: 0;
+            padding-right: 0;
+            padding-bottom: 2px;
+            margin-bottom: 8px;
+        }
+
+        .cascader-select-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+
+            .cascader-option-icon {
+                color: rgba(0, 0, 0, 0.45);
+            }
+
+            .input-wrapper {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                margin-left: 8px;
+                color: rgba(0, 0, 0, 0.45);
+
+                input {
+                    border-radius: 2px;
+
+                    &:hover {
+                        border-color: rgba(0, 0, 0, 0.35);
+                    }
+                }
+
+                .cascader-right-icon {
+                    font-size: 12px;
+                    margin-left: 8px;
+                }
+            }
+
+            .cascader-option-active {
+                color: @primary-color;
+
+                >input {
+                    border-color: @primary-color;
+
+                    &:hover {
+                        border-color: @primary-color;
+                    }
+                }
+            }
+        }
+
+        .cascader-add-wrapper {
+            font-size: 12px;
+            padding: 0 10px;
+            height: 36px;
+            line-height: 36px;
+            color: @primary-color;
+            text-align: center;
+
+            >div {
+                // display: inline-block;
+
+                .add-cascader-item-icon {
+                    margin-right: 6px;
+                }
+            }
+        }
+    }
+}
+
+/* 管理常用题 */
+.management-common-question-wrapper {
+    padding-top: 16px;
+
+    .add-common-text {
+        display: inline-block;
+        margin-left: 6px;
+    }
+
+    .common-use-list {
+        height: 380px;
+        margin-top: 26px;
+        border-radius: 2px;
+        border: 1px solid #e2e6ed;
+        overflow-y: auto;
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 42px;
+            padding: 0 16px;
+            border-bottom: 1px solid #e2e6ed;
+
+            >span {
+                flex: 1;
+                padding-right: 20px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .common-use-option {
+
+                span {
+                    display: inline-block;
+
+                    &:first-of-type {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+
+        .border-none {
+            border-bottom: none;
+        }
+    }
+}
+
+.add-common-use-container {
+    margin: 16px -24px 20px;
+    padding: 0 24px;
+    height: 50vh;
+    min-height: 420px;
+    overflow-y: auto;
+}
+
+.add-common-use-inner-wrapper {
+    background-color: #eff1f3;
+
+    .add-common-use-select {
+        background-color: #fff;
+        padding-bottom: 1px;
+    }
+
+    .add-common-use-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+
+        .select-tip {
+            width: 56px;
+            line-height: 32px;
+            font-weight: 600;
+            margin-right: 16px;
+        }
+
+        >ul,
+        input {
+            flex: 1;
+        }
+
+        ul {
+
+            li {
+                display: inline-block;
+                min-width: 86px;
+                height: 32px;
+                line-height: 32px;
+                box-sizing: border-box;
+                padding: 0 10px;
+                margin-top: 10px;
+                background: #fff;
+                border-radius: 4px;
+                border: 1px solid #e2e6ed;
+                margin-right: 14px;
+                font-size: 12px;
+
+                &:last-of-type {
+                    margin-right: 0;
+                }
+
+                .icon {
+                    position: relative;
+                    top: 1px;
+                    width: 14px;
+                    height: 14px;
+                    font-size: 14px;
+                    margin-right: 6px;
+                }
+            }
+
+            .active {
+                color: @primary-color;
+                border-color: @primary-color;
+            }
+        }
+    }
+
+    .common-form-body {
+        padding: 26px 76px 16px;
+        min-height: 304px;
+        border-radius: 2px;
+    }
+}
