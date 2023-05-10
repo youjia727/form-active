@@ -1,4 +1,4 @@
-export const options = [{
+export const treeOptions = [{
     value: '',
     text: '',
     children: [{
@@ -6,48 +6,20 @@ export const options = [{
         text: '',
         children: [{
             value: '',
-            text: '',
-            children: [{
-                value: '',
-                text: '',
-            }, {
-                value: '',
-                text: '',
-            }]
+            text: ''
         }, {
             value: '',
-            text: '',
-            children: [{
-                value: '',
-                text: '',
-            }, {
-                value: '',
-                text: '',
-            }]
+            text: ''
         }]
     }, {
         value: '',
         text: '',
         children: [{
             value: '',
-            text: '',
-            children: [{
-                value: '',
-                text: '',
-            }, {
-                value: '',
-                text: '',
-            }]
+            text: ''
         }, {
             value: '',
-            text: '',
-            children: [{
-                value: '',
-                text: '',
-            }, {
-                value: '',
-                text: '',
-            }]
+            text: ''
         }]
     }]
 }, {
@@ -58,48 +30,20 @@ export const options = [{
         text: '',
         children: [{
             value: '',
-            text: '',
-            children: [{
-                value: '',
-                text: '',
-            }, {
-                value: '',
-                text: '',
-            }]
+            text: ''
         }, {
             value: '',
-            text: '',
-            children: [{
-                value: '',
-                text: '',
-            }, {
-                value: '',
-                text: '',
-            }]
+            text: ''
         }]
     }, {
         value: '',
         text: '',
         children: [{
             value: '',
-            text: '',
-            children: [{
-                value: '',
-                text: '',
-            }, {
-                value: '',
-                text: '',
-            }]
+            text: ''
         }, {
             value: '',
-            text: '',
-            children: [{
-                value: '',
-                text: '',
-            }, {
-                value: '',
-                text: '',
-            }]
+            text: ''
         }]
     }]
 }]

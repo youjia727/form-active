@@ -2,14 +2,10 @@ import { useState, useRef } from 'react';
 import { PlusCircleOutlined, MinusCircleOutlined, RightOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { Modal, Input, Select } from 'antd';
 import utils from '@/assets/utils';
-import { options } from '@/assets/utils/tree';
+import { treeOptions } from '@/assets/utils/tree';
 import useMessage from '@/hooks/useMessage';
-import { baseProps, cascaderModeTypes } from '@/assets/utils/formConfig/editorConfig';
+import { baseProps, cascaderModeTypes, objProps } from '@/assets/utils/formConfig/editorConfig';
 import '@/assets/style/modal.less';
-
-type objProps = {
-	[key: string]: any
-}
 
 type propTypes = {
 	open: boolean,
@@ -44,81 +40,47 @@ function treeDataSlice<T,>(treeList: Array<T>, level: number) {
 	if (!treeList || !treeList.length) return;
 	level--;
 	for (let i = 0; i < treeList.length; i++) {
-		const ele = treeList[i] as objProps;
+		const ele = treeList[i] as cascaderOptionTypes;
 		if (!level) {
 			delete ele.children;
+		} else {
+			treeDataSlice(ele?.children || [], level);
 		}
-		level && treeDataSlice(ele.children, level);
 	}
 };
 // 生成树形结构数据
 function initTreeData<T,>(treeList: Array<T>, level: number) {
-	if (level === 4) return options;
-	// 深拷贝一份
-	const cloneTreeList = utils.deepClone(treeList);
+	const cloneTreeList = utils.deepClone(treeList); // 深拷贝一份
 	treeDataSlice(cloneTreeList, level);
 	return cloneTreeList;
 };
-// 树结构的节点
-// function addTreeData(nodeCount: number, level: number) {
-// 	// nodeCount 节点数， level 层级数，从0开始
-// 	const treeNode: cascaderOptionTypes = {
-// 		value: '',
-// 		text: '',
-// 		level
-// 	}
-// 	if (nodeCount === 1) return treeNode;
-// 	nodeCount--;
-// 	treeNode['children'] = [addTreeData(nodeCount, level), addTreeData(nodeCount, level)];
-// 	return treeNode;
-// };
-
-function addTreeData(nodeCount: number) {
+// 生成节点树
+function treeNodeCallback(nodeCount: number) {
 	// nodeCount 节点数
 	const treeNode: cascaderOptionTypes = {
 		value: '',
 		text: ''
 	}
-	if (nodeCount === 1) return treeNode;
+	if (nodeCount <= 1) return treeNode;
 	nodeCount--;
-	treeNode['children'] = [addTreeData(nodeCount), addTreeData(nodeCount)];
+	treeNode['children'] = [treeNodeCallback(nodeCount), treeNodeCallback(nodeCount)];
 	return treeNode;
 };
-
-// 将树形结构转换成数组
-function treeToList<T>(tree: Array<T>) {
-	let res: Array<T> = [];
-	let id = 0;
-	formateData(tree, 0);
-	function formateData(tree: Array<T>, level: number, pid?: number) {
-		for (let i = 0; i < tree.length; i++) {
-			let count = level || 0;
-			const element = tree[i] as cascaderOptionTypes;
-			element['level'] = count;
-			element['id'] = id;
-			element['pid'] = pid;
-			res.push(element as T);
-			id++;
-			if (element.children) {
-				count++;
-				formateData(element.children as Array<T>, count, element.id);
-			}
-		}
-	}
-	return res;
-};
-
 /* 返回增加节点的新树结构 */
-function addTreeNodeCallback<T>(treeList: Array<T>, level: number): Array<T> {
-	let newList = [...treeList];
-	for (let i = 0; i < newList.length; i++) {
-		const element = newList[i] as cascaderOptionTypes;
-		if (!element.children) {
-			// 增加新节点到树上结构
-			const treeNode = addTreeData(level);
-			element['children'] = [treeNode, treeNode];
-		} else {
-			addTreeNodeCallback(element.children, level);
+function addTreeNodeCallback<T>(treeList: Array<T>, nodeCount: number): Array<T> {
+	let newList = utils.deepClone(treeList); //深拷贝一份数据，避免操作节点引起原数据变化
+	const targetNode = treeNodeCallback(nodeCount); // 生成新节点
+	addTreeNode(newList, targetNode);
+	// 增加节点递归函数
+	function addTreeNode(list: Array<T>, targetNode: cascaderOptionTypes) {
+		for (let i = 0; i < list.length; i++) {
+			const element = list[i] as cascaderOptionTypes;
+			if (!element.children) {
+				// 增加新节点到树结构末尾
+				element['children'] = [targetNode, targetNode];
+			} else {
+				addTreeNode(element.children as Array<T>, targetNode);
+			}
 		}
 	}
 	return newList;
@@ -127,14 +89,12 @@ function addTreeNodeCallback<T>(treeList: Array<T>, level: number): Array<T> {
 const numArrIndex = ['一', '二', '三', '四'];
 
 /* 层级联动数据配置 */
-function CascaderConfig(props: propTypes) {
+export default function CascaderConfig(props: propTypes) {
 
 	const { open, cancel, item } = props;
-
-	// console.log('item===========', item)
-
 	const selectRef = useRef(null);
 	const message = useMessage();
+
 	// 控制弹框显示
 	const [show, setShow] = useState(open);
 	// 是否点击确认按钮
@@ -154,10 +114,8 @@ function CascaderConfig(props: propTypes) {
 	const [cascaderMode, setCascaderMode] = useState<Array<cascaderModeTypes>>(item.cascaderMode);
 	// 层级联动树型列表
 	const [cascaderOption, setCascaderOption] = useState<Array<cascaderOptionTypes>>(() => {
-		return item.options.length ? item.options : initTreeData(options, count);
+		return item.options.length ? item.options : treeOptions;
 	});
-	// 层级联动数组列表
-	// const [cascaderList, setCascaderList] = useState<Array<cascaderOptionTypes>>(treeToList(cascaderOption));
 
 	/* 标题输入框内容发生变化 */
 	const titleInputChange = (value: string, idx: number) => {
@@ -172,7 +130,7 @@ function CascaderConfig(props: propTypes) {
 		const arr = [0, 1, 2, 3];
 		return arr.filter(el => el > idx);
 	};
-	/* 当前选项选中 */
+	/* 设置当前选项选中状态 */
 	const handleSelectActive = (idx: number, optIdx: number) => {
 		const newObj = { ...idxObj };
 		const newArr = levelNumberCallback(idx);
@@ -240,7 +198,7 @@ function CascaderConfig(props: propTypes) {
 			treeData = initTreeData(cascaderOption, value); //删除节点树
 			newCascaderMode = [...cascaderMode].slice(0, value); // 删除节点标题
 		}
-		handleSelectActive(0, 0);
+		handleSelectActive(0, 0); // 重置选中状态
 		setCascaderOption(treeData);
 		setCascaderMode(newCascaderMode);
 		setCount(value);
@@ -248,12 +206,8 @@ function CascaderConfig(props: propTypes) {
 	/* 增加选项的回调函数 */
 	const editCascaderOptionCallback = (treeList: Array<cascaderOptionTypes>, level: number, type: string, treeNode?: cascaderOptionTypes, optIdx?: number) => {
 		const cloneTreeList = utils.deepClone(treeList);
-		let childrenList: Array<cascaderOptionTypes> = [];
-		for (let i = 0; i < level; i++) {
-			// 上一层级选中的索引值
-			const preEditIdx = idxObj[('idx' + i) as keyof typeof idxObj];
-			childrenList = (childrenList.length ? childrenList[preEditIdx].children : cloneTreeList[preEditIdx].children) || [];
-		}
+		// 查询到当前显示的children列表（第一级就是树列表）
+		const childrenList = treeListCallback(cloneTreeList, level);
 		// 限制至少设置一个选项
 		if (type === 'delete' && childrenList.length <= 1) {
 			message.info('至少设置一个选项');
@@ -264,15 +218,18 @@ function CascaderConfig(props: propTypes) {
 	};
 	/* 添加层级的选项 */
 	const handleAddCascaderOption = (idx: number) => {
+		// idx为 0 -> 表示点击第一级添加选项，此时需要增加4个树节点，idx增大，节点数减少
+		// 层级倒序列表 [4，3，2，1]
 		const levelList = cascaderMode.map((el, i) => i + 1).reverse();
-		const treeNode = addTreeData(levelList[idx]); //当前选项节点
-		// 如果是第一级就直接添加，其它级需要插入到上一级选中的children中
+		//生成当前选项节点
+		const treeNode = treeNodeCallback(levelList[idx]);
+		// 如果是第一级就直接添加，其它级需要添加到上一级选中的children中
 		idx ? editCascaderOptionCallback(cascaderOption, idx, 'add', treeNode) : setCascaderOption([...cascaderOption, treeNode]);
 	};
 	/* 删除层级选项 */
-	const handleDeleteCascaderOption = (level: number, optIdx: number) => {
+	const handleDeleteCascaderOption = (idx: number, optIdx: number) => {
 		const cloneCascaderOption = [...cascaderOption];
-		if (!level) {
+		if (!idx) {
 			// 限制至少设置一个选项
 			if (cloneCascaderOption.length <= 1) {
 				message.info('至少设置一个选项');
@@ -283,38 +240,52 @@ function CascaderConfig(props: propTypes) {
 			setCascaderOption(cloneCascaderOption);
 		} else {
 			// 如果是其它层级就需要找到上一节点children的列表，再删除当前选项
-			editCascaderOptionCallback(cascaderOption, level, 'delete', undefined, optIdx);
+			editCascaderOptionCallback(cascaderOption, idx, 'delete', undefined, optIdx);
 		};
-		handleSelectActive(level, optIdx - 1);
+		handleSelectActive(idx, optIdx - 1);
 	};
-	/* 判断是否有相同的值 */
-	const uniqueValueCallback = (treeList: Array<cascaderOptionTypes>): boolean => {
-		const values: Array<string> = []; //数据数组，判断是否重复
-		return treeList.some(el => {
-			// 判断是否是空字符串
-			if (!el.value.trim().length) {
-				el.value.length > 0 ? message.info('选项内容不能为空') : message.info('请输入选项内容');
-				return true;
-			};
-			// 判断是否内容重复
-			if (values.includes(el.value)) {
-				message.info('选项内容重复，请修改')
-				return true;
-			} else {
-				values.push(el.value);
-			};
-			// 如果有children就递归判断内容
-			if (el.children) {
-				return uniqueValueCallback(el.children);
-			};
-		});
+	/* 切换到没有输入内容、或者内容相同的input填写框 */
+	const editLevelIndex = (levels: Array<number>) => {
+		const newObjIdx = { ...idxObj };
+		levels.forEach((el, idx) => {
+			newObjIdx[('idx' + idx) as keyof typeof newObjIdx] = el;
+		})
+		setIdxObj(newObjIdx);
+	};
+	/* 判断是否填写、层级中是否数据相同 */
+	const validateTreeData = (treeList: Array<cascaderOptionTypes>): boolean => {
+		let levalArr: Array<number> = []; //层级数组，判断没有填写数据或者相同项
+		function checkTreeData(list: Array<cascaderOptionTypes>, level?: number): boolean {
+			const values: Array<string> = []; //数据数组，判断是否重复
+			return list.some((el, idx) => {
+				let count = level || 0;
+				levalArr[count] = idx;
+				// 判断是否是空字符串
+				if (!el.value.trim().length) {
+					el.value.length > 0 ? message.info('选项内容不能为空') : message.info('请输入选项内容');
+					editLevelIndex(levalArr);
+					return true;
+				};
+				// 判断是否内容重复
+				if (values.includes(el.value)) {
+					message.info('选项内容重复，请修改');
+					return true;
+				} else {
+					values.push(el.value);
+				};
+				// 如果有children就递归判断内容
+				if (el.children) {
+					count++;
+					return checkTreeData(el.children, count);
+				}
+			});
+		};
+		return checkTreeData(treeList);
 	};
 	/* 点击确认操作 */
 	const handleOk = () => {
-		if (!uniqueValueCallback(cascaderOption)) {
-			setShow(false);
-			setClickBtn(true);
-		}
+		setShow(false);
+		setClickBtn(true);
 	};
 	/* modal框完全关闭之后 */
 	const afterClose = () => {
@@ -336,7 +307,7 @@ function CascaderConfig(props: propTypes) {
 			maskClosable={false}
 			open={show}
 			afterClose={afterClose}
-			onOk={handleOk}
+			onOk={() => !validateTreeData(cascaderOption) && handleOk()}
 			onCancel={() => setShow(false)}
 		>
 			<div className='cascader-container'>
@@ -395,5 +366,3 @@ function CascaderConfig(props: propTypes) {
 		</Modal>
 	)
 }
-
-export default CascaderConfig;

@@ -228,6 +228,28 @@ export default {
 		let idx = this.findIndex(arr, target, attr);
 		return idx > -1 ? arr[idx] : undefined;
 	},
+	// 将树形结构转换成数组
+	treeToList<T>(tree: Array<T>) {
+		let res: Array<T> = [];
+		let id = 0;
+		formateData(tree, 0);
+		function formateData(tree: Array<T>, level: number, pid?: number) {
+			for (let i = 0; i < tree.length; i++) {
+				let count = level || 0;
+				const element = tree[i] as objProps;
+				element['level'] = count;
+				element['id'] = id;
+				element['pid'] = pid;
+				res.push(element as T);
+				id++;
+				if (element.children) {
+					count++;
+					formateData(element.children as Array<T>, count, element.id);
+				}
+			}
+		}
+		return res;
+	},
 	// 将一个类数组对象转换为一个真实的数组
 	toArray<T>(list: Array<T>, start: number = 0): Array<T> {
 		let i = list.length - start;
