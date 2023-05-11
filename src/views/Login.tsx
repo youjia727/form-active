@@ -5,7 +5,7 @@ import useMessage from "@/hooks/useMessage";
 import { useRouter } from '@/hooks/useRouter';
 
 function Login() {
-	// 初始化提示语实例
+	// 提示语
 	const message = useMessage();
 
 	/**
@@ -15,7 +15,6 @@ function Login() {
 	const router = useRouter();
 	// 定义form组件里的方法
 	const [form] = Form.useForm();
-	
 
 	/**
 	 * * 定义函数

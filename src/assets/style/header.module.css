@@ -90,6 +90,16 @@
 	text-overflow: ellipsis;
 }
 
+.link_target {
+	color: rgba(0, 0, 0, 0.55);
+}
+
+.link_target>span:last-of-type {
+	display: inline-block;
+	margin-left: 4px;
+	font-size: 12px;
+}
+
 .link_logout {
 	margin-top: 6px;
 }

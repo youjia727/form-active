@@ -36,7 +36,7 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 	const titleRef = useRef<InputRef | null>(null);
 
 	// 获取本地存储的表单信息
-	const formData = useSelector((state: RootState) => state.form.formData);
+	const formData = useSelector((state: RootState) => utils.deepClone(state.form.formData));
 
 
 	/**

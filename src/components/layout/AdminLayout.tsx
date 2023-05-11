@@ -1,6 +1,7 @@
 import { Navigate, useNavigate, Outlet, useLocation } from "react-router-dom";
 import { Layout, Dropdown, Button } from 'antd';
 import { DoubleLeftOutlined, PlusOutlined } from '@ant-design/icons';
+import IconFont from "../IconFont";
 // 个人信息下拉显示内容样式
 import styles from '@/assets/style/header.module.css';
 
@@ -33,33 +34,34 @@ function AdminLayout() {
 			{/* logo显示区域 */}
 			<div className={styles.logo_wrapper}>
 				{/* 是否显示返回按钮 */}
-				{location.pathname !== '/forms' ? <DoubleLeftOutlined
-					onClick={() => navigate(-1)}
-					title='返回'
-					className='opacity'
-					style={{ marginRight: 10 }} /> : ''}
+				{/* {location.pathname !== '/forms' ?
+					<DoubleLeftOutlined
+						onClick={() => navigate(-1)}
+						title='返回'
+						className='opacity'
+						style={{ marginRight: 10 }}
+					/> : null
+				} */}
 				<img src='/vite.svg' />
 				<h2>LRT表单设计</h2>
 				{/* 是否显示新增表单按钮 */}
 				{location.pathname === '/forms' ?
-					<Button
-						className={styles.add_btn}
-						type='primary'
-						icon={<PlusOutlined />}
-						onClick={() => navigate('/create')}
-					>
-						新建表单
-					</Button> : ''}
+					<Button className={styles.add_btn} type='primary' icon={<PlusOutlined />} onClick={() => navigate('/create')}>新建表单</Button> : null
+				}
 			</div>
 			<div className={styles.user_wrapper}>
-				{/* 个人信息下拉显示内容 */}
-				<Dropdown dropdownRender={() => menu} overlayClassName={styles.user_menu_wrapper}
+				<a className={styles.link_target} href="https://github.com/youjia727/form-web-react" target="_blank" rel="noreferrer">
+					<span>查看源码</span>
+					<IconFont type="icon-fenxiang" />
+				</a>
+				{/* 个人信息 */}
+				{/* <Dropdown dropdownRender={() => menu} overlayClassName={styles.user_menu_wrapper}
 					placement="bottomRight" trigger={['hover', 'click']}>
 					<div className={`${styles.user} user-nav hover-color`}>
 						<span>大师傅</span>
 						<img src="/image/avatar.jpg" alt="" />
 					</div>
-				</Dropdown>
+				</Dropdown> */}
 			</div>
 		</Header>
 		<Content style={{ marginTop: 52 }}>
@@ -68,14 +70,14 @@ function AdminLayout() {
 				<Outlet />
 			</div>
 			{/* 底部商标显示 */}
-			<Footer
-				style={{
-					textAlign: 'center',
-					padding: '14px 14px 10px',
-					fontSize: 12,
-					color: '#666'
-				}}>
-				Copyright © 2022 大技狮 版权所有
+			<Footer style={{
+				textAlign: 'center',
+				padding: '14px 14px 10px',
+				fontSize: 12,
+				color: '#666'
+			}}
+			>
+				Copyright © 2023 LRT表单设计
 			</Footer>
 		</Content>
 	</Layout>

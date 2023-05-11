@@ -21,7 +21,7 @@ function withLoadingComponent(ele: JSX.Element) {
 
 const routes = [{
 	path: '/',
-	element: <Navigate to="/forms" />
+	element: <Navigate to="/create" />
 }, {
 	path: '/login',
 	element: <Login />
