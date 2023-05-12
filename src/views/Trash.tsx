@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Table, Button, Space } from 'antd';
+import { Card, Table, Space } from 'antd';
 import type { TablePaginationConfig } from 'antd/es/table';
 
 const { Column } = Table;

@@ -17,9 +17,7 @@ export default function LoginLayout(props: {children: JSX.Element}) {
 		<div className={styles.contact}>
 			<p>Copyright © 2023 表单设计</p>
 			<p>
-				<a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">京ICP备19044154号-2</a>
-				<span className={styles.vline}></span>
-				<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502039145" target="_blank" rel="noreferrer">京公网安备11010502039145号</a>
+				<a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noreferrer">京ICP备2023000500号-1</a>
 			</p>
 		</div>
 	</div>

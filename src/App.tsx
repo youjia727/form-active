@@ -4,7 +4,7 @@ import router from '@/router';
 import LoginLayout from '@/components/layout/LoginLayout';
 import { ReactElement } from 'react';
 
-function View() {
+export default function View() {
 	// 解析路由配置表对象
 	const outlet = useRoutes(router) as ReactElement;
 	// 初始化location对象实例
@@ -19,6 +19,4 @@ function View() {
 			}
 		</App>
 	)
-}
-
-export default View;
+};

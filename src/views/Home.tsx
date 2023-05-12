@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Layout, Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import Menu from '@/components/Menu';
@@ -21,18 +21,15 @@ const iconStyle = {
 /**
  * * 显示表单列表数据
  *  */
-function Home() {
-
+export default function Home() {
 	/**
 	 * * 定义数据
 	 *  **/
 	const location = useLocation();
 	// 获取浏览器参数
 	const query = queryString.parse(location.search);
-
 	// 当前页面显示内容的标签名
 	const [activeKey, setActiveKey] = useState(query.type ? query.type + '' : 'mycreate');
-
 	//控制左侧菜单栏折叠
 	const [collapsed, setCollapsed] = useState(false);
 
@@ -45,11 +42,6 @@ function Home() {
 		label: '',
 		children: <Trash />,
 	}];
-
-	/**
-	 * * 页面生命周期函数
-	 *  */
-	useEffect(() => {}, [])
 
 	/**
 	 * * 自定义函数
@@ -73,6 +65,4 @@ function Home() {
 			</Content>
 		</Layout>
 	)
-}
-
-export default Home;
+};

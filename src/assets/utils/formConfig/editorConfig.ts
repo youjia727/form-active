@@ -124,29 +124,6 @@ const cascaderInit = {
         children: 'children'
     },
     options: []
-    // [{
-    //     value: 'zhejiang',
-    //     text: 'Zhejiang',
-    //     children: [{
-    //         value: 'hangzhou',
-    //         text: 'Hangzhou',
-    //         children: [{
-    //             value: 'xihu',
-    //             text: 'West Lake'
-    //         }],
-    //     }],
-    // }, {
-    //     value: 'jiangsu',
-    //     text: 'Jiangsu',
-    //     children: [{
-    //         value: 'nanjing',
-    //         text: 'Nanjing',
-    //         children: [{
-    //             value: 'zhonghuamen',
-    //             text: 'Zhong Hua Men'
-    //         }]
-    //     }]
-    // }]
 }
 
 
@@ -191,8 +168,7 @@ export const initComponent = (tag: string, initValues: objProps = {}) => {
     return config;
 };
 
-/* icon 是阿里iconfont 上放入项目管理的，可以在IconFont.tsx 文件中查看 */
-// 基本组件展示
+// 基本组件展示 (icon 是阿里iconfont上放入项目管理的，可以在IconFont.tsx 文件中查看)
 export const baseCompList: Array<baseCompProps> = [{
     label: '填空题',
     icon: 'plusblanksfill',

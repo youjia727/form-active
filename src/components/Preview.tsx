@@ -1,8 +1,5 @@
 import { useState, useEffect, memo } from 'react';
-import {
-	Button, Checkbox, Input, Space, Radio,
-	Select, Rate, DatePicker
-} from 'antd';
+import { Button, Checkbox, Input, Space, Radio, Select, Rate, DatePicker } from 'antd';
 import { CaretDownOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import IconFont from './IconFont';
 import options from '@/assets/utils/options';
@@ -10,13 +7,13 @@ import CascaderList from '@/components/CascaderList';
 import utils from '@/assets/utils';
 import dayjs from 'dayjs';
 import { useUpdate } from '@/hooks/useUpdate';
+import useMessage from '@/hooks/useMessage';
 import { baseProps, optionProps, objProps, cascaderModeTypes } from '@/assets/utils/formConfig/editorConfig';
 import '@/assets/style/preview.less';
 
 const { TextArea } = Input;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
-
 
 type submitDataTypes = {
 	[key: string]: {
@@ -27,10 +24,14 @@ type submitDataTypes = {
 
 // 表头与结束语类型
 interface headerTypes {
-	descData: string,
+	content: string,
 	align: string,
 	imageList: Array<string>
 };
+
+interface formHeaderTypes extends headerTypes {
+	title: string
+}
 
 // 表单类型
 interface formListType {
@@ -95,10 +96,8 @@ function messageSelectCallback(max?: number | null, min?: number | null) {
 
 // 表单验证
 function ruleChecked(rule: objProps) {
-	// console.log(rule)
 	// 修改错误状态
 	rule.error = Array.isArray(rule.value) ? !rule.value.length : !rule.value;
-	// console.log(rule.error)
 	// 判断是否填写信息
 	if (!rule.value || (Array.isArray(rule.value) && !rule.value.length)) {
 		rule.message = '此题为必填，请将内容补充完整';
@@ -148,12 +147,57 @@ function scrollError(targetId: string) {
 // 输入框占位符
 const inputCharacter: string = '＿＿＿＿';
 
+// 标题静态显示内容
+const RenderFormHeader = memo((props: formHeaderTypes) => {
+	const { title, content, align, imageList } = props;
+	return <>
+		{/* ----------- 表单表头显示内容------------- */}
+		<div className='render-title'>{title}</div>
+		{/* -------------- 描述语内容 ---------------- */}
+		{content.trim() ?
+			<div className='render-describle'
+				style={{ textAlign: align === 'left' ? 'left' : 'center' }}>{content}</div>
+			: null
+		}
+		{/* ----------- 表单表头图片展示 ------------- */}
+		{imageList.length ?
+			<div className='render-image-list'>
+				{imageList.map((imgUrl: string, idx: number) => (
+					<div className='render-image-item' key={'header-image-' + (idx + 1)}>
+						<img src={imgUrl} alt='' />
+					</div>
+				))}
+			</div> : null
+		}
+	</>
+});
+// 问题，描述语，以及图片
+const LabelContent = memo((attrs: objProps) => (
+	<div className='write-item-caption'>
+		{/* -------- 问题 --------- */}
+		<div className='write-item-title'>
+			{attrs.required ? <span className='isRequired'>*</span> : null}
+			{attrs.idx}. {attrs.tag === 'checkbox' ? <span className='select-title-extra'>[多选]</span> : null}{attrs.title}
+		</div>
+		{/* -------- 问题说明 --------- */}
+		{attrs.desc.trim().length ?
+			<div className='write-item-describle'>{attrs.desc}</div> : null
+		}
+		{/* -------- 问题图片 --------- */}
+		{attrs.imgUrl.length ?
+			<div className='write-item-image-title'>
+				<img src={attrs.imgUrl} alt='' />
+			</div> : null
+		}
+	</div>
+));
+
 /* 这是答题显示页面 */
 function Preview(props: propTypes) {
 
 	const { formData, open } = props;
-
 	const update = useUpdate();
+	const message = useMessage();
 
 	/**
 	 * * 定义数据
@@ -162,8 +206,6 @@ function Preview(props: propTypes) {
 	const title = formData?.title || '';
 	// 表单列表
 	const formList = formData?.list || [];
-
-	// console.log(formList)
 	// 表单头部内容描述
 	const formHeader: headerTypes | objProps = formData?.header || {};
 	// 结束语
@@ -477,9 +519,7 @@ function Preview(props: propTypes) {
 	};
 	/* 多段填空输入框内容变化 */
 	const multipleInputChange = (attr: string, value: string, idx: number) => {
-		// console.log(attr, value, idx)
 		let arr: string[] = submitValues[attr]?.value ?? [];
-		// console.log(arr)
 		arr[idx] = value;
 		validateFormItem(attr, arr);
 	};
@@ -495,52 +535,15 @@ function Preview(props: propTypes) {
 	const onFinish = () => {
 		const keys: Array<string> = renderFormList.map(item => item.id);
 		let error = validateFileds(keys);
+		if (error) return;
+		message.info('请打开控制查看打印结果');
 		console.log('是否有验证失败：', error);
 		console.log('提交数据格式：', submitValues)
 	};
 
-	// 问题，描述语，以及图片
-	const LabelContent = (attrs: objProps) => (
-		<div className='write-item-caption'>
-			{/* -------- 问题 --------- */}
-			<div className='write-item-title'>
-				{attrs.required ? <span className='isRequired'>*</span> : null}
-				{attrs.idx}. {attrs.tag === 'checkbox' ? <span className='select-title-extra'>[多选]</span> : null}{attrs.title}
-			</div>
-			{/* -------- 问题说明 --------- */}
-			{attrs.desc.trim().length ?
-				<div className='write-item-describle'>{attrs.desc}</div> : null
-			}
-			{/* -------- 问题图片 --------- */}
-			{attrs.imgUrl.length ?
-				<div className='write-item-image-title'>
-					<img src={attrs.imgUrl} alt='' />
-				</div> : null
-			}
-		</div>
-	)
-
 	return (
 		<div className='render-container'>
-			{/* ----------- 表单表头显示内容------------- */}
-			<div className='render-title'>{title}</div>
-			{/* -------------- 描述语内容 ---------------- */}
-			{formHeader.descData.trim() ?
-				<div className='render-describle'
-					style={{ textAlign: formHeader.align }}>{formHeader.descData}</div>
-				: null
-			}
-			{/* ----------- 表单表头图片展示 ------------- */}
-			{formHeader.imageList.length ?
-				<div className='render-image-list'>
-					{formHeader.imageList.map((imgUrl: string, idx: number) => (
-						<div className='render-image-item' key={'header-image-' + (idx + 1)}>
-							<img src={imgUrl} alt='' />
-						</div>
-					))}
-				</div> : null
-			}
-
+			<RenderFormHeader title={title} align={formHeader.align} content={formHeader.content} imageList={formHeader.imageList} />
 			{/* --------------- 表单主要内容 ---------------- */}
 			<div className='write-container'>
 				{renderFormList.map((item, idx) => (

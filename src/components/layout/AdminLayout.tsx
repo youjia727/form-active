@@ -7,18 +7,9 @@ import styles from '@/assets/style/header.module.css';
 
 const { Header, Content, Footer } = Layout;
 
-
-function AdminLayout() {
-	// 初始化路由实例
-	const navigate = useNavigate();
-	const { pathname } = useLocation();
-
-	// 获取登录权限的凭证
-	let token = 'asasdasdasasd';
-
-
-	// 个人信息下拉显示内容
-	const menu: JSX.Element = (
+// 个人信息内容
+const UserNav = ():JSX.Element => {
+	return (
 		<ul className={styles.menu}>
 			<div className={styles.userinfo}>
 				<p className={styles.name}>大师傅</p>
@@ -27,6 +18,17 @@ function AdminLayout() {
 			<li className={`${styles.link_logout} hover-color`}>退出登录</li>
 		</ul>
 	)
+}
+
+// 后台整体布局
+function AdminLayout() {
+	// 初始化路由实例
+	const navigate = useNavigate();
+	const { pathname } = useLocation();
+
+	// 获取登录权限的凭证
+	let token = 'asasdasdasasd';
+
 
 	const content: JSX.Element = <Layout>
 		{/* 头部显示内容 */}
@@ -55,7 +57,7 @@ function AdminLayout() {
 					<IconFont type="icon-fenxiang" />
 				</a>
 				{/* 个人信息 */}
-				{/* <Dropdown dropdownRender={() => menu} overlayClassName={styles.user_menu_wrapper}
+				{/* <Dropdown dropdownRender={() => <UserNav />} overlayClassName={styles.user_menu_wrapper}
 					placement="bottomRight" trigger={['hover', 'click']}>
 					<div className={`${styles.user} user-nav hover-color`}>
 						<span>大师傅</span>

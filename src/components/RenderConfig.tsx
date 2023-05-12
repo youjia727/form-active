@@ -47,7 +47,7 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 	// 表单标题
 	const [title, setTitle] = useState(formData?.title || '');
 	// 描述语内容
-	const [descData, setDescData] = useState(formData?.header?.descData || '');
+	const [content, setContent] = useState(formData?.header?.content || '');
 	// 描述语对齐方式
 	const [align, setAlign] = useState(formData?.header?.align || 'center');
 	// 描述语图片列表
@@ -60,7 +60,7 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 		return {
 			title,
 			header: {
-				descData,
+				content,
 				align,
 				imageList
 			},
@@ -98,7 +98,7 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 	};
 	/* 描述语内容回调函数 */
 	const inputChange = useCallback((data: noteTypes) => {
-		setDescData(data.content);
+		setContent(data.content);
 		setAlign(data.align);
 	}, [])
 	/* 上传图片的回调函数, 裁剪图片的回调 */
@@ -151,7 +151,7 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 				onClick={() => dispatch(setFocusId(startDescId))}>
 				{/* 添加描述语内容区域 */}
 				<Customize
-					data={{ content: descData, align }}
+					data={{ content, align }}
 					ref={inputRef}
 					max={4}
 					show={focusId === startDescId}

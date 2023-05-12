@@ -9,7 +9,7 @@ export interface commonComp {
 }
 
 type headerTypes = {
-	descData: string,
+	content: string,
 	align: string,
 	imageList: Array<string>
 }

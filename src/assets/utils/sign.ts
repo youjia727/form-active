@@ -1,6 +1,6 @@
 import md5 from 'md5';
 
-type onjProps = {
+type objTypes = {
   [key: string]: any
 }
 
@@ -14,7 +14,7 @@ type dataProps = {
 }
 
 // 拼接参数
-function _sign(obj: onjProps = {}) {
+function _sign(obj: objTypes = {}) {
   let sign: string = '';
   for (var item in obj) {
     sign += '&' + item + '=' + obj[item as keyof typeof obj] + '';
@@ -25,7 +25,7 @@ function _sign(obj: onjProps = {}) {
 }
 
 export default {
-  sign: function(data: onjProps) {
+  sign: function(data: objTypes) {
     let timestamp: number = Date.now();
     let _data: dataProps = {
       time: timestamp,
@@ -44,7 +44,7 @@ export default {
     const keys: Array<any> = Object.keys(dataAssign).sort();
 
     // 定义一个空对象
-    const obj: onjProps = {};
+    const obj: objTypes = {};
 
     for (let i = 0; i < keys.length; i++) {
       obj[keys[i]] = dataAssign[keys[i]];
@@ -55,7 +55,7 @@ export default {
     };
     oSign.sign = _sign(obj);
 
-    let add_sign: onjProps = {};
+    let add_sign: objTypes = {};
 
     add_sign = Object.assign(obj, oSign);
 

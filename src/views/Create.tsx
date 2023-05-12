@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { Space, Button, DatePicker, Switch, Divider, Drawer } from 'antd';
-import { useSearchParams } from "react-router-dom";
 import IconFont from "@/components/IconFont";
 // 渲染表单配置的主页面
 import RenderConfigContainer from '@/components/RenderConfig';
@@ -31,7 +30,7 @@ import '@/assets/style/create.less';
 
 
 interface headerTypes {
-	descData: string,
+	content: string,
 	align: string,
 	imageList: Array<string>
 };
@@ -57,8 +56,7 @@ function scrollError(targetId: string) {
 	}
 };
 
-function Create() {
-	// const [search, setSearch] = useSearchParams();
+export default function Create() {
 
 	const message = useMessage();
 
@@ -87,16 +85,13 @@ function Create() {
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	// 表单数据
 	const [formData, setFormData] = useState<formConfigTypes | null>(null);
+	// 结束语数据
+	const result = useSelector((state: RootState) => state.form.result);
 
 
 	/**
 	 * * 生命周期函数
 	 *  */
-	// useEffect(() => {
-	// 	setSearch({
-	// 		type: 'captcha'
-	// 	})
-	// }, [])
 	useEffect(() => {
 		drawerOpen ? utils.lockScroll() : utils.unlockScroll();
 	}, [drawerOpen])
@@ -128,8 +123,8 @@ function Create() {
 		type === 'start' ? setStartDate(dateString) : setEndDate(dateString);
 	};
 	/* 子组件修改 editResult 属性的回调函数 */
-	const showResultPage = useCallback((val: boolean) => {
-		setEditResult(val)
+	const showResultPage = useCallback((visible: boolean) => {
+		setEditResult(visible)
 	}, []);
 	/* 点击选择左侧菜单组件 */
 	const handleSelectComponent = (item: baseCompProps, type: string) => {
@@ -198,7 +193,12 @@ function Create() {
 	};
 	/* 完成创建 */
 	const handleSubmit = () => {
-		console.log(startDate, endDate, status);
+		const values = checkForm();
+		if (!values) return;
+		message.info('请打开控制查看打印结果');
+		console.log('表单描述语：', values.header);
+		console.log('表单列表数据：', values.list);
+		console.log('表单结束语：', result);
 	};
 
 	return (
@@ -350,5 +350,3 @@ function Create() {
 		</div>
 	)
 }
-
-export default Create;

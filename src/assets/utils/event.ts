@@ -13,7 +13,7 @@ class Subscribe {
     return Date.now() + Math.random();
   };
   // 订阅事件的触发器
-  on(eventName: string, callBack: any): number {
+  on(eventName: string, callBack: Function): number {
     // 创建名称事件序列
     const subscribeCallBacks = this.subscribes.get(eventName) || new Map();
     // 根据id给事件序列化
@@ -24,7 +24,7 @@ class Subscribe {
     return uuid;
   };
   // 发布事件
-  emit(eventName: string, ...args: any[]) {
+  emit(eventName: string, ...args: Array<any>) {
     // 判断事件队列是否存在 eventName 如果没有就创建一个空对象
     const subscribeCallBacks = this.subscribes.get(eventName) || new Map();
     // 循环获取 eventName 事件对象上的事件序列

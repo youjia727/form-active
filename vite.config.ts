@@ -31,12 +31,20 @@ export default defineConfig({
 		port: 3001,
 		hmr: {
 			overlay: false
-		}
+		},
+		// proxy: {
+		// 	'/apis': {
+		// 		target: 'https://www.baidu,com',
+		// 		changeOrigin: true,
+		// 		rewrite: path => path.replace(/^\/apis/, "")
+		// 	}
+		// }
 	},
 	// 生产环境下面的配置
 	build: {
 		outDir: "dist",
 		minify: "esbuild",
+		chunkSizeWarningLimit: 1500,
 		rollupOptions: {
 			output: {
 				entryFileNames: "js/[name].[hash].chunk.js",

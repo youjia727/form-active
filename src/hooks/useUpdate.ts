@@ -70,7 +70,7 @@ export function useUpdate() {
 
     function updateCallback(callback: Function) {
         callback();
-        update(+new Date());
+        update(Date.now());
     };
     return updateCallback;
 };

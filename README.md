@@ -37,8 +37,7 @@ npm run build
 
 - antd5
 ```
-antd5已经放弃less，使用css-in-js的方式注入样式，所以安装antd之后不需要引入样式文件都可使用，
-但是antd4必须要引入样式文件才行。
+antd5已经放弃less，使用css-in-js的方式注入样式，所以安装antd之后不需要引入样式文件都可使用，但是antd4必须要引入样式文件才行。
 ```
 
 - less
@@ -49,8 +48,7 @@ vite4中已经默认安装less使用，但是建立样式文件必须是.module.
 - 样式兼容
 ```
 Ant Design 支持最近 2 个版本的现代浏览器。如果你需要兼容旧版浏览器，请根据实际需求进行降级处理：
-代码库中使用的是:where 选择器，降低CSS Selector优先级。如果你需要支持的旧版浏览器（或者如TailwindCSS优先级冲突），
-你可以使用 @ant-design/cssinjs 取消默认的降权操作（请注意版本保持与 antd 一致），
+代码库中使用的是:where 选择器，降低 CSS Selector 优先级。如果你需要支持的旧版浏览器（或者如 TailwindCSS 优先级冲突），你可以使用 @ant-design/cssinjs 取消默认的降权操作（请注意版本保持与 antd 一致），
 并且在代码库中修改Ant Design的css前面加上:root即可，如下所示：
 
 css样式修改：

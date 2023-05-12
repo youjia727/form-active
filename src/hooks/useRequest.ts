@@ -10,17 +10,13 @@ import useAxios from './useAxios';
  * * 接口函数
  * */
 
-type objProps = {
-	[key: string]: any
-}
-
 export default function useRequest() {
 	// 初始化axios实例
 	const axios = useAxios();
 
 	return {
 		// 手机号登录
-		mobileLogin(params: objProps) {
+		mobileLogin<T>(params: T) {
 			return axios.post('/login', params)
 		}
 	}
