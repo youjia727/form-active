@@ -37,8 +37,8 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 
 	// 获取本地存储的表单信息
 	const formData = useSelector((state: RootState) => utils.deepClone(state.form.formData));
-
-
+	// console.log('formData===========', formData)
+	
 	/**
 	 * * 定义数据
 	 *  */
@@ -82,6 +82,13 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 			})
 			dispatch(setFocusId(item.id));
 		});
+		event.on('clear', () => {
+			setTitle('');
+			setContent('');
+			setAlign('center');
+			setImageList([]);
+			setList([]);
+		})
 		return () => {
 			event.off();
 		}

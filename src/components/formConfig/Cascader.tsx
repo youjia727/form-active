@@ -33,7 +33,6 @@ function Cascader(props: propsType) {
 	};
 	/* 编辑层级联动配置的回调函数 */
 	const cascaderCallback = (visible: boolean, config?: objProps) => {
-		console.log(config)
 		if (config) {
 			item.options = config.options;
 			item.cascaderMode = config.title;

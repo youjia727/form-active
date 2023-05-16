@@ -8,7 +8,7 @@ import Result from './Result';
 // 管理常用题
 import CommonQuestion from '@/components/modal/CommonQuestion';
 // 图标
-import { FormOutlined } from '@ant-design/icons';
+import { FormOutlined, EyeOutlined } from '@ant-design/icons';
 // 美化滚动条组件
 import FreeScrollBar from 'react-free-scrollbar';
 // 预览页面
@@ -26,6 +26,7 @@ import utils from '@/assets/utils';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import { commonComp } from "@/store/reducers/formReducer";
+import { saveAs } from 'file-saver';
 import '@/assets/style/create.less';
 
 
@@ -61,6 +62,8 @@ export default function Create() {
 	const message = useMessage();
 
 	const formRef = useRef<formConfigTypes>(null);
+
+	const downloadRef = useRef<HTMLAnchorElement>(null);
 
 	const dispatch: AppDispatch = useDispatch();
 
@@ -181,7 +184,7 @@ export default function Create() {
 		};
 		return current;
 	};
-	/* 点击预览 */
+	/* 预览 */
 	const handlePreview = () => {
 		const values = checkForm();
 		if (!values) return;
@@ -191,11 +194,34 @@ export default function Create() {
 		dispatch(setFocusId(0));
 		setDrawerOpen(true);
 	};
+	/* 查看json */
+	const handleShowJson = () => {
+		message.info('功能正在开发中，请耐心等待');
+	};
+	/* 导出tsx文件 */
+	const handleDownload = () => {
+		const { current } = downloadRef;
+		current && current?.click();
+	};
+	/* 清空数据 */
+	const handleClear = () => {
+		event.emit('clear');
+		dispatch(addFormData({}));
+		dispatch(setFocusId(0));
+	};
 	/* 完成创建 */
 	const handleSubmit = () => {
 		const values = checkForm();
 		if (!values) return;
-		message.info('请打开控制查看打印结果');
+		const formJsonData = {
+			header: values.header,
+			list: values.list,
+			result
+		}
+		console.log(formJsonData.toString())
+		// const blob = new Blob([JSON.stringify(formJsonData)], { type: 'text/plain;charset=utf-8' })
+		// saveAs(blob, 'formData.json');
+		// message.info('请打开控制查看打印结果');
 		console.log('表单描述语：', values.header);
 		console.log('表单列表数据：', values.list);
 		console.log('表单结束语：', result);
@@ -276,6 +302,16 @@ export default function Create() {
 					<section className="form-content">
 						{/* 表单的配置 */}
 						<div className="form-config-page">
+							{/* 预览与导出文件内容 */}
+							<div className="center-board">
+								<Space size={14} className="operate-setting">
+									<Button type="link" icon={<IconFont type="icon-run" />} onClick={handlePreview}>预览</Button>
+									<Button type="link" icon={<EyeOutlined className="icon-json" />} onClick={handleShowJson}>查看json</Button>
+									<Button type="link" icon={<IconFont type="icon-xiazai" />} onClick={handleDownload}>导出tsx文件</Button>
+									<Button type="link" danger icon={<IconFont type="icon-shanchu" />} onClick={handleClear}>清空</Button>
+								</Space>
+								<a className="download" ref={downloadRef} href="/public/download.zip" target="_blank" download="write.zip"></a>
+							</div>
 							{/*--------- 展示form配置的内容------------ */}
 							<RenderConfigContainer ref={formRef} />
 							{/* 结束语-分隔线 */}
@@ -292,6 +328,7 @@ export default function Create() {
 					{/* 右侧设置时间与发布状态 */}
 					<aside className="release-config">
 						<div className="right-sider-config">
+							<h4>通用设置</h4>
 							{/* 开始时间 */}
 							<div className="right-sider-config-item">
 								<span className="text-label">开始时间</span>
@@ -322,11 +359,9 @@ export default function Create() {
 								<Switch size="small" onChange={() => setStatus(!status)} checked={status} />
 							</div>
 						</div>
-						{/* 预览、创建 */}
-						<Space size={20} className="operate-setting">
-							<Button onClick={handlePreview}>预览</Button>
-							<Button type="primary" onClick={handleSubmit}>完成创建</Button>
-						</Space>
+						<div className="right-sider-config image-wrapper">
+							<img className="form-news-image" src="/image/news.png" alt="" />
+						</div>
 					</aside>
 				</div> :
 				<>

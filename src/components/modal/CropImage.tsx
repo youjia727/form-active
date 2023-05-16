@@ -81,15 +81,15 @@ function CropImage(props: propTypes) {
 		const ctx = canvas.getContext('2d');
 		// 裁剪图片
 		ctx && ctx.drawImage(
-			ele,
-			newCrop.x * scaleX,
-			newCrop.y * scaleY,
-			newCrop.width * scaleX,
-			newCrop.height * scaleY,
-			0,
-			0,
-			width,
-			height,
+			ele, // 图像、画布或视频
+			newCrop.x * scaleX, // 开始剪切的 x 坐标位置 (左上角开始)
+			newCrop.y * scaleY, // 开始剪切的 y 坐标位置
+			newCrop.width * scaleX, //被剪切图像的宽度
+			newCrop.height * scaleY, // 被剪切图像的高度
+			0, // 在画布上放置图像的 x 坐标位置
+			0, // 在画布上放置图像的 y 坐标位置
+			width, // 画布展示图像的宽度
+			height, // 画布展示图像的高度
 		);
 		// 将canvas图片转换成base64
 		const cropUrl = canvas.toDataURL('image/png');

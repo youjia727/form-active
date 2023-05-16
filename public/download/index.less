@@ -1,0 +1,346 @@
+.render-container {
+    position: relative;
+    width: 780px;
+    padding: 48px 80px 90px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 4px;
+
+    .render-title {
+        padding-bottom: 32px;
+        line-height: 22px;
+        font-size: 20px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .render-describle {
+        padding: 16px 0 10px;
+        line-height: 20px;
+        color: #666;
+        white-space: pre-wrap;
+    }
+
+    .render-image-list {
+        text-align: center;
+
+        .render-image-item {
+            margin: 4px 0 8px;
+
+            >img {
+                max-width: 440px;
+                min-width: 200px;
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    .space-wrapper {
+        padding-top: 8px;
+    }
+
+    .ant-select-selector {
+        border-radius: 2px;
+        box-shadow: none !important;
+    }
+
+    .write-item {
+        position: relative;
+        padding: 32px 0;
+
+        .write-item-caption {
+            line-height: 1.5;
+
+            >div {
+                padding-bottom: 8px;
+            }
+
+            .write-item-title {
+                position: relative;
+                font-weight: 600;
+
+                .isRequired {
+                    position: absolute;
+                    left: -8px;
+                    top: 2px;
+                    font-size: 10px;
+                    color: #ff0000;
+                }
+
+                .select-title-extra {
+                    display: inline-block;
+                    margin-right: 6px;
+                    color: rgba(0, 0, 0, 0.45);
+                    font-weight: normal;
+                }
+            }
+
+            .write-item-describle {
+                color: #444;
+                font-size: 12px;
+            }
+
+            .write-item-image-title {
+                padding: 8px 0 16px;
+
+                img {
+                    display: block;
+                    max-width: 440px;
+                    min-width: 100px;
+                    width: 100%;
+                    height: auto;
+                    max-height: 440px;
+                }
+            }
+        }
+
+        .write-error-text {
+            position: absolute;
+            left: 0;
+            bottom: 2px;
+            color: #ff4d4f;
+            font-size: 12px;
+            line-height: 24px;
+        }
+
+        .write-input {
+            outline: none;
+            box-shadow: none;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            padding-left: 0;
+            padding-right: 0;
+            border-radius: 0;
+
+            &:focus {
+                box-shadow: none !important;
+            }
+        }
+
+        .detail-input {
+            position: relative;
+            top: 4px;
+            padding: 0;
+            height: auto;
+            min-height: 24px;
+        }
+
+        // 选择题样式
+        .select-group {
+            display: flex;
+            flex-wrap: wrap;
+
+            .select-item {
+                width: 100%;
+
+                >label {
+                    position: relative;
+                    display: flex;
+                    margin-right: 0;
+                    margin-left: 0;
+                    padding: 5px 0;
+                    height: auto;
+
+                    .ant-radio,
+                    .ant-checkbox {
+                        position: absolute;
+                        top: 10px;
+                        left: 0;
+
+                        .ant-radio-inner {
+                            width: 14px;
+                            height: 14px;
+                        }
+                    }
+
+                    .ant-checkbox {
+
+                        .ant-checkbox-inner {
+
+                            &::after {
+                                left: 16%;
+                            }
+                        }
+                    }
+
+                    >span {
+
+                        &:last-of-type {
+                            flex: 1;
+                            padding-left: 24px;
+                            padding-right: 0;
+                        }
+                    }
+
+                    .select-image {
+                        display: block;
+                        padding-top: 6px;
+                        max-width: 440px;
+                        min-width: 100px;
+                        width: 100%;
+                        height: auto;
+                        max-height: 440px;
+                    }
+                }
+
+                .other-select-wrapper {
+                    display: flex;
+                    align-items: flex-start;
+
+                    .other-select-input {
+                        flex: 1;
+                        position: relative;
+                        top: -3px;
+                        margin-left: 10px;
+                    }
+                }
+            }
+        }
+
+        .third-select-group {
+
+            .select-item {
+                width: 33.33%;
+            }
+        }
+
+        .half-select-group {
+
+            .select-item {
+                width: 50%;
+            }
+        }
+
+        .detail-input-wrapper {
+            position: relative;
+            margin-top: 8px;
+
+            .anticon-environment {
+                position: absolute;
+                right: 2px;
+                top: 10px;
+                color: #aaa;
+                background-color: #fff;
+            }
+        }
+
+        /* 评分样式 */
+        .ant-rate {
+
+            .ant-rate-star-zero {
+
+                .anticon-star {
+                    color: #c2c2c2;
+                }
+            }
+        }
+
+        /* 多段填空样式 */
+        .multiple-input-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+
+            .step-text {
+                margin: 6px 0;
+            }
+
+            .step-input-warpper {
+                display: inline-block;
+                position: relative;
+                min-height: 22px;
+                margin: 0 8px;
+                word-break: break-all;
+                min-width: 100px;
+                max-width: 100%;
+
+                .step-input-item {
+                    display: inline-block;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+
+                    .step-input {
+                        padding: 0;
+                        min-height: 22px;
+                        color: rgba(0, 0, 0, 0.65);
+                        height: auto;
+                    }
+                }
+            }
+        }
+
+        /* 日期样式 */
+        .date-picker-wrapper {
+            display: flex;
+
+            .date-icon {
+                margin-right: 8px;
+            }
+        }
+
+        .ant-picker {
+            width: 100%;
+            padding-bottom: 3px;
+            box-shadow: none !important;
+        }
+
+        .range-picker {
+            border: none;
+            padding: 0;
+
+            .ant-picker-range-separator {
+                padding: 0 20px;
+            }
+
+            .ant-picker-input {
+                padding: 4px 0 3px;
+                border-bottom: 1px solid #dedede;
+
+                &:hover {
+                    border-color: @primary-color;
+                }
+            }
+
+            .ant-picker-active-bar {
+                margin-left: 0;
+            }
+        }
+
+        /* 层级联动 */
+        .address-input {
+            border-bottom-style: dashed;
+        }
+    }
+
+    .write-btn-wrapper {
+        text-align: center;
+        margin-top: 46px;
+
+        button {
+            width: 96px;
+        }
+    }
+}
+
+// 下拉选择框样式
+.dropdown-select-wrapper {
+
+    .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+        color: @primary-color;
+        font-weight: normal;
+        background-color: transparent;
+    }
+
+    .ant-select-item-option:not(.ant-select-item-option-disabled) {
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+    }
+}

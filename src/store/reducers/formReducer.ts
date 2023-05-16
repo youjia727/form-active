@@ -48,7 +48,11 @@ let initialState: dataType = {
 	commonComponent: utils.getItem('COMMON-COMP-FORM') ?? [], //常用题列表,
 	formList: [], // 表单拖拽顺序之前列表，记录拖拽之前的数据,
 	formData: {}, //表单数据
-	result: {} //结束语数据
+	result: {
+		align: 'center',
+		content: '',
+		imageList: []
+	} //结束语数据
 }
 
 export const formReducer = createSlice({

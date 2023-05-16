@@ -15,7 +15,6 @@ export default function useMessage() {
 			key
 		})
 	};
-
 	// 错误提示信息
 	function error(content: String) {
 		message.error({
@@ -23,7 +22,6 @@ export default function useMessage() {
 			key
 		})
 	};
-
 	// 成功的提示信息
 	function success(content: String) {
 		message.success({
@@ -31,7 +29,6 @@ export default function useMessage() {
 			key
 		})
 	};
-
 	// 警告的提示信息
 	function warning(content: String) {
 		message.warning({
@@ -39,7 +36,6 @@ export default function useMessage() {
 			key
 		})
 	};
-
 	// 加载中的信息
 	function loading(content: String) {
 		hide = message.loading({
@@ -48,7 +44,6 @@ export default function useMessage() {
 			duration: 0
 		})
 	};
-
 	// 关闭所有提示
 	function close() {
 		hide && hide()
