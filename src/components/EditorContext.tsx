@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Input, Checkbox, Popover } from 'antd';
+import { Checkbox, Popover } from 'antd';
 import {
 	RightOutlined, EyeInvisibleOutlined,
 	CheckOutlined, CaretDownOutlined, CaretUpOutlined
@@ -11,6 +11,7 @@ import IconFont from './IconFont';
 import useMessage from '@/hooks/useMessage';
 import DragContext from './DragContext';
 import Upload from './Upload';
+import TextAreaComponent from './TextArea';
 import RenderImg from '@/components/RenderImg';
 import InputComponent from '@/components/formConfig/Input';
 import RateComponent from '@/components/formConfig/Rate';
@@ -26,19 +27,15 @@ import utils from '@/assets/utils';
 import { baseProps, objProps, optionProps } from '@/assets/utils/formConfig/editorConfig';
 import '@/assets/style/editorContext.less';
 
-const { TextArea } = Input;
-
 type propTypes = {
 	index: number,
 	modal?: boolean,
 	setList?: Function,
 	item: baseProps,
 	[key: string]: any
-}
-
+};
 
 const compTagList: objProps = compTags;
-
 
 /* 策略模式根据类型渲染组件 */
 const renderComponentCallback = (type: string, item: baseProps, tag: string, modal?: boolean): JSX.Element => {
@@ -53,12 +50,11 @@ const renderComponentCallback = (type: string, item: baseProps, tag: string, mod
 	return strategyCallback[type as keyof typeof strategyCallback];
 };
 
+// 表单编辑项内容
 const EditorContext = (props: propTypes) => {
 
 	const { item, index, modal, listeners, move, deleteOptionCallBack } = props;
-
 	const dispatch: AppDispatch = useDispatch();
-
 	const message = useMessage();
 	// 更新页面
 	const update = useUpdate();
@@ -69,7 +65,6 @@ const EditorContext = (props: propTypes) => {
 	// 是否展开下拉菜单
 	const [dropOpen, setDropOpen] = useState(false);
 
-
 	/**
 	 * * 自定义函数
 	 *  */
@@ -78,12 +73,6 @@ const EditorContext = (props: propTypes) => {
 	const handleSelectActive = (id: string) => {
 		if (id === focusId) return;
 		dispatch(setFocusId(id))
-	};
-	/* 输入内容变化 */
-	const inputChange = (e: any, attr: string) => {
-		update(() => {
-			item[attr] = e.target.value;
-		})
 	};
 	/* 上传图片的回调函数, 裁剪图片的回调 */
 	const editImageCallback = (url: string) => {
@@ -160,7 +149,7 @@ const EditorContext = (props: propTypes) => {
 		<ul className='setting-component-content'>
 			{compTagCallback().map(column => (
 				<li key={column.tag} onClick={() => handleEditTag(column.tag)}>
-					{item.tag === column.tag ? <CheckOutlined className='checked-tag-icon' /> : ''}
+					{item.tag === column.tag ? <CheckOutlined className='checked-tag-icon' /> : null}
 					{column.text}
 				</li>
 			))}
@@ -170,11 +159,11 @@ const EditorContext = (props: propTypes) => {
 	/* 更多操作的内容 */
 	const content = (
 		<ul className='setting-other-content'>
-			<Upload
-				component="popover"
-				uploadCallback={editImageCallback}
-			>
-				<li>{item.imgUrl ? '替换' : '添加'}图片（标题） <RightOutlined className='arrow-right-icon' /></li>
+			<Upload component="popover" uploadCallback={editImageCallback}>
+				<li>
+					{item.imgUrl ? '替换' : '添加'}图片（标题）
+					<RightOutlined className='arrow-right-icon' />
+				</li>
 			</Upload>
 			<li onClick={() => handleShow('noteShow')}>
 				{item.noteShow ? '隐藏' : '添加'}题目说明
@@ -192,106 +181,66 @@ const EditorContext = (props: propTypes) => {
 	);
 
 	return (
-		<div
-			style={{ paddingTop: modal ? 16 : 'auto' }}
-			id={`form-question-${item.id}`}
+		<div onClick={() => handleSelectActive(item.id)} id={`form-question-${item.id}`}
 			className={`form-question-item ${item.id === focusId ? 'question-content-actived' : ''}`}
-			onClick={() => handleSelectActive(item.id)}
-		>
+			style={{ paddingTop: modal ? 16 : 'auto' }}>
 			{!modal ?
 				<span {...listeners} ref={move} className="form-question-move" title='移动'>
 					<img src="/image/form/move.png" alt="" />
 				</span> : null
 			}
-
 			{/* ---------- 设置问题 --------- */}
 			<div className='form-item-title'>
 				<span className={`index ${item.required ? 'required' : ''}`}>{index + 1}.</span>
-				<TextArea
-					placeholder='请输入问题'
-					value={item.title}
-					onChange={e => inputChange(e, 'title')}
-					autoSize
-					className="form-item-input form-title"
-				/>
+				<TextAreaComponent item={item} attr='title' tip='请输入问题' className='form-title' />
 			</div>
-
 			{/* 是否隐藏题目 */}
 			{!item.isShow ?
 				<div className='hide-wrapper'>
 					<EyeInvisibleOutlined className='hide-icon' />
 					<span>此题已隐藏</span>
-				</div> : ''
+				</div> : null
 			}
-
 			{/* ----------- 题目描述说明 ------------- */}
 			<div className='question-description'>
-				{item.noteShow ?
-					<TextArea
-						placeholder='题目说明'
-						value={item.note}
-						onChange={e => inputChange(e, 'note')}
-						autoSize
-						className="form-item-input description-input"
-					/> : ''}
+				{item.noteShow ? <TextAreaComponent item={item} attr='note' tip='题目说明' className='description-input' /> : null}
 			</div>
-
 			{/*------------ 图片展示区 --------------  */}
 			{item.imgUrl ?
 				<div className='question-image-wrapper'>
-					<RenderImg
-						list={[item.imgUrl]}
-						align='left'
-						deleteCallback={() => editImageCallback('')}
-						cropCallback={editImageCallback}
-					/>
-				</div> : null}
-
+					<RenderImg list={[item.imgUrl]} align='left' deleteCallback={() => editImageCallback('')} cropCallback={editImageCallback} />
+				</div> : null
+			}
 			{/* ------------- 显示的左侧组件类型 -------------- */}
 			{renderComponentCallback(type, item, item.tag, modal)}
 
 			{/* -------- 底部右边操作区域 ---------- */}
 			<div className='form-item-options'>
 				{/* 方块类型下拉选择 */}
-				<Popover
-					overlayClassName='popover-wrapper'
-					arrow={false}
-					placement='bottom'
-					content={dropContent}
-					open={dropOpen}
-					onOpenChange={(open) => setDropOpen(open)}
-					trigger={compTagCallback().length >= 2 ? 'click' : 'contextMenu'}
-
-				>
+				<Popover overlayClassName='popover-wrapper' arrow={false} placement='bottom'
+					content={dropContent} open={dropOpen} onOpenChange={(open) => setDropOpen(open)}
+					trigger={compTagCallback().length >= 2 ? 'click' : 'contextMenu'}>
 					<div className={`setting-type ${compTagCallback().length >= 2 ? 'cursor' : 'default'}`}>
 						<span className='type-text'>{renderText(item.tag)}</span>
 						{compTagCallback().length >= 2 ?
 							<span className='caret-icon' onClick={handleOpen}>
 								{dropOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
-							</span> : null}
+							</span> : null
+						}
 					</div>
 				</Popover>
 				<div className='line'></div>
 				<div className='setting-required'>
 					<span>必填</span>
-					<Checkbox
-						onChange={e => handleShow('required')}
-						checked={item.required}
-					></Checkbox>
+					<Checkbox onChange={e => handleShow('required')} checked={item.required}></Checkbox>
 				</div>
 				{!modal ?
-					<div className='setting-delete hover-color'
-						onClick={() => deleteOptionCallBack(index)}>
+					<div className='setting-delete hover-color' onClick={() => deleteOptionCallBack(index)}>
 						<IconFont type='icon-shanchu' title='删除' />
 					</div> : null
 				}
-				<Popover
-					overlayClassName='popover-wrapper'
-					arrow={false}
-					placement="bottomLeft"
-					content={content}
-					trigger='hover'
-				>
+				<Popover overlayClassName='popover-wrapper' arrow={false} placement="bottomLeft"
+					content={content} trigger='hover'>
 					<div className='setting-other hover-color'>
 						<IconFont type='icon-sangedian' title='更多' />
 					</div>

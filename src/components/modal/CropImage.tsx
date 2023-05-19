@@ -4,23 +4,19 @@ import ReactCrop, { Crop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import '@/assets/style/renderImg.less';
 
-
 type propTypes = {
 	open: boolean,
 	cancel: Function,
-	imgUrl: string|undefined,
+	imgUrl: string | undefined,
+	idx: number,
 	cropCallback: Function
 }
 
 function CropImage(props: propTypes) {
 
-	const { open, cancel, imgUrl, cropCallback } = props;
-
+	const { open, cancel, imgUrl, idx, cropCallback } = props;
 	const imgRef = useRef(null);
 
-	/*
-	* 定义数据
-	 */
 	// 图片放大缩小
 	const [scale, setScale] = useState(1);
 	// 图片裁剪显示区域
@@ -94,7 +90,7 @@ function CropImage(props: propTypes) {
 		// 将canvas图片转换成base64
 		const cropUrl = canvas.toDataURL('image/png');
 		// 将裁剪后的图片对象传递给 其它 组件
-		cropCallback && cropCallback(cropUrl);
+		cropCallback && cropCallback(cropUrl, idx);
 		closeModal();
 	};
 	/* 点击完成图片裁剪 */
@@ -104,39 +100,21 @@ function CropImage(props: propTypes) {
 	};
 
 	return (
-		<Modal
-				title="裁剪图片"
-				open={open}
-				width={720}
-				centered
-				maskClosable={false}
-				getContainer={false}
-				footer={null}
-				onCancel={closeModal}
-			>
-				<div className="crop-wrapper">
-					<ReactCrop
-						crop={crop}
-						ruleOfThirds
-						minWidth={50}
-						minHeight={50}
-						onChange={cropChange}
-						keepSelection
-					>
-						<div onWheel={onWheel} style={{ maxHeight: 410, overflow: 'hidden' }}>
-							<img ref={imgRef} src={imgUrl ?? ''} crossOrigin="anonymous"
-								onDragStart={(e: DragEvent) => e.preventDefault()}
-								style={{ transform: `scale(${scale})` }}
-								className="cutting-image"
-								alt=""
-							/>
-						</div>
-					</ReactCrop>
-				</div>
-				<div className="cutting-success">
-					<Button onClick={handleSure} type="primary">完 成</Button>
-				</div>
-			</Modal>
+		<Modal title="裁剪图片" open={open} width={720} centered maskClosable={false}
+			getContainer={false} footer={null} onCancel={closeModal}>
+			<div className="crop-wrapper">
+				<ReactCrop crop={crop} ruleOfThirds minWidth={50} minHeight={50}
+					onChange={cropChange} keepSelection>
+					<div onWheel={onWheel} style={{ maxHeight: 410, overflow: 'hidden' }}>
+						<img ref={imgRef} src={imgUrl ?? ''} crossOrigin="anonymous" onDragStart={(e: DragEvent) => e.preventDefault()}
+							style={{ transform: `scale(${scale})` }} className="cutting-image" alt="" />
+					</div>
+				</ReactCrop>
+			</div>
+			<div className="cutting-success">
+				<Button onClick={handleSure} type="primary">完 成</Button>
+			</div>
+		</Modal>
 	)
 }
 

@@ -309,8 +309,10 @@ export default function Create() {
 									<Button type="link" danger icon={<IconFont type="icon-shanchu" />} onClick={handleClear}>清空</Button>
 								</Space>
 							</div>
+
 							{/*--------- 展示form配置的内容------------ */}
 							<RenderConfigContainer ref={formRef} />
+							
 							{/* 结束语-分隔线 */}
 							<div className="form-bottom">
 								<Divider dashed style={{ fontSize: 14 }}>

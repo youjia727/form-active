@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
     DndContext, KeyboardSensor, closestCenter,
     useSensor, useSensors, PointerSensor
@@ -50,7 +51,7 @@ const DragContext = (Component: any) => {
             }
         };
 
-        const DroppableConetnt = Droppable(Component);
+        const DroppableConetnt = memo(Droppable(Component));
 
 
         /* 

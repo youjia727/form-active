@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Modal, Input, Empty, Button } from 'antd';
 import {
 	baseCompList, initComponent,
@@ -14,22 +14,48 @@ import { AppDispatch, RootState } from '@/store';
 import { setCommonComp, delCommonComp } from '@/store/reducers/formReducer';
 import { PlusOutlined } from '@ant-design/icons';
 import '@/assets/style/modal.less';
-
+import event from '@/assets/utils/event';
 
 type propTypes = {
 	open: boolean,
 	cancel: Function
 }
 
+const InputComponent = memo(forwardRef((props: { value: string }, ref) => {
+
+	const { value } = props;
+	const [title, setTitle] = useState(value);
+
+	/* ref传递值 */
+	useImperativeHandle(ref, () => {
+		return {
+			value: title
+		}
+	});
+	useEffect(() => {
+		event.on('setData', () => {
+			setTitle(value);
+		})
+		return () => {
+			event.off('setData');
+		}
+	}, []);
+
+	return (
+		<div className='add-common-use-item'>
+			<p className='select-tip'>常用标题</p>
+			<Input onChange={e => setTitle(e.target.value.trim())} value={title}
+				maxLength={52} placeholder='输入自定义常用标题，不输入则为题目问题' />
+		</div>
+	)
+}));
 
 /* 管理常用题 */
 function CommonQuestion(props: propTypes) {
 
 	const { open, cancel } = props;
-
 	const message = useMessage();
 	const modal = useModal();
-
 	const dispatch: AppDispatch = useDispatch();
 
 	// 常用题列表
@@ -41,8 +67,7 @@ function CommonQuestion(props: propTypes) {
 	// 常用标题
 	const [commonTitle, setCommonTitle] = useState('');
 	// 配置项
-	const [configItem, setConfigItem] = useState<baseProps|objProps>({});
-
+	const [configItem, setConfigItem] = useState<baseProps | objProps>({});
 
 
 	/* 添加常用题 */
@@ -60,6 +85,7 @@ function CommonQuestion(props: propTypes) {
 		setCommonTitle(item.label);
 		setConfigItem(item.config);
 		setAddModalOpen(true);
+		event.emit('setData');
 	};
 	/* 删除常用题 */
 	const handleDeleteCommon = (idx: number) => {
@@ -96,21 +122,12 @@ function CommonQuestion(props: propTypes) {
 	};
 	/* modal框完全关闭之后 */
 	const afterClose = () => {
-		// 关闭弹框，并且传递数据
 		cancel(false);
 	};
 
 	return (
-		<Modal
-			centered
-			width={720}
-			title="管理常用题"
-			maskClosable={false}
-			footer={null}
-			open={show}
-			afterClose={afterClose}
-			onCancel={() => setShow(false)}
-		>
+		<Modal centered width={720} title="管理常用题" maskClosable={false} footer={null}
+			open={show} afterClose={afterClose} onCancel={() => setShow(false)}>
 			<div className='management-common-question-wrapper'>
 				<div onClick={() => handleAddCommon()} className='primary-color opacity'>
 					<PlusOutlined />
@@ -128,29 +145,15 @@ function CommonQuestion(props: propTypes) {
 						</li>
 					))}
 					{!commonList.length ?
-						<Empty
-							description={<span style={{ color: '#333' }}>暂无我的常用题</span>}
-							style={{ marginTop: 60 }}
-						>
-							<Button
-								style={{ fontSize: 13 }}
-								onClick={() => handleAddCommon()}
-								type="primary"
-							>新建常用题</Button>
+						<Empty description={<span style={{ color: '#333' }}>暂无我的常用题</span>} style={{ marginTop: 60 }}>
+							<Button style={{ fontSize: 13 }} onClick={() => handleAddCommon()} type="primary">新建常用题</Button>
 						</Empty> : null
 					}
 				</ul >
 
 				{/* ------------- 添加常用题的弹框 ---------------- */}
-				<Modal
-					centered
-					width={830}
-					title="添加常用题"
-					maskClosable={false}
-					open={addModalOpen}
-					onOk={addModalOk}
-					onCancel={() => setAddModalOpen(false)}
-				>
+				<Modal centered width={830} title="添加常用题" maskClosable={false} open={addModalOpen}
+					onOk={addModalOk} onCancel={() => setAddModalOpen(false)}>
 					<div className='add-common-use-container'>
 						<div className='add-common-use-inner-wrapper'>
 							<div className='add-common-use-select'>
@@ -158,25 +161,16 @@ function CommonQuestion(props: propTypes) {
 									<p className='select-tip' style={{ marginTop: 10 }}>选择题型</p>
 									<ul>
 										{baseCompList.map((item, idx) => (
-											<li key={'commom-use-add-comp-' + idx}
-												className={`${configItem.tag === item.tag ? 'active' : ''} hover-color border-color`}
-												onClick={() => handleAddCommon(item)}
-											>
+											<li key={'commom-use-add-comp-' + idx} onClick={() => handleAddCommon(item)}
+												className={`${configItem.tag === item.tag ? 'active' : ''} hover-color border-color`}>
 												<IconFont className="icon" type={'icon-' + item.icon} />
 												<span>{item.label}</span>
 											</li>
 										))}
 									</ul>
 								</div>
-								<div className='add-common-use-item'>
-									<p className='select-tip'>常用标题</p>
-									<Input
-										onChange={e => setCommonTitle(e.target.value.trim())}
-										value={commonTitle}
-										maxLength={52}
-										placeholder='输入自定义常用标题，不输入则为题目问题'
-									/>
-								</div>
+								{/* -------- 设置常用标题 --------- */}
+								<InputComponent value={commonTitle} />
 							</div>
 							<div className='common-form-body'>
 								<div className='form'>

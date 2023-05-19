@@ -1,6 +1,7 @@
 import { useRef, useState, useContext, memo, useCallback } from 'react';
 import { Input, Checkbox } from 'antd';
 import Upload from '../Upload';
+import TextAreaComponent from '../TextArea';
 import { StateContext } from '../stateContext';
 import DragContext from '../DragContext';
 import MarkLabel from '../modal/MarkLabel';
@@ -33,26 +34,18 @@ interface selectTypes extends propTypes, objProps {
 const SelectOption = DragContext(memo((props: selectTypes) => {
 
 	const { item, dragItem, index, listeners, move, deleteOptionCallBack } = props;
-
 	const message = useMessage();
-
 	const state = useContext(StateContext);
 
 	// 更新页面
 	const update = useUpdate();
-
+	// 其他输入框的ref
 	const textareaRef = useRef<TextAreaRef>(null);
 	// 点击设置其他选项
 	const [editOther, setEditOther] = useState(false);
 	// 设置标签的弹框显示
 	const [markLabelOpen, setMarkLabelOpen] = useState(false);
 
-	/* 输入内容变化 */
-	const inputChange = (e: any) => {
-		update(() => {
-			item.options[index].label = e.target.value;
-		})
-	};
 	/* “其他” 选项输入内容变化 */
 	const handleSetOther = () => {
 		setEditOther(true);
@@ -68,7 +61,7 @@ const SelectOption = DragContext(memo((props: selectTypes) => {
 	/* 其他项输入内容失去焦点 */
 	const otherInputBlur = (label: string) => {
 		if (!label.length) {
-			item.options[index].label = '其他';
+			dragItem.label = '其他';
 		}
 		setEditOther(false)
 	};
@@ -135,12 +128,8 @@ const SelectOption = DragContext(memo((props: selectTypes) => {
 							{dragItem.mode === 0 ?
 								/*------ 其他输入框操作内容 --------*/
 								<>{editOther ?
-									<TextArea
-										ref={textareaRef}
-										placeholder="其他"
-										autoSize
-										value={dragItem.label}
-										onChange={inputChange}
+									<TextArea ref={textareaRef} placeholder="其他" autoSize value={dragItem.label}
+										onChange={e => update(() => dragItem.label = e.target.value)}
 										onBlur={e => otherInputBlur(dragItem.label)}
 										className="form-item-input description-input option-input"
 									/> :
@@ -148,16 +137,9 @@ const SelectOption = DragContext(memo((props: selectTypes) => {
 										<span className='other-title-input'>{dragItem.label}</span>
 										<span className='other-input'>填写者回答区</span>
 									</div>
-								}</>
-								:
+								}</> :
 								/*------ 正常输入框操作内容 --------*/
-								<TextArea
-									placeholder={'选项' + (index + 1)}
-									autoSize
-									value={dragItem.label}
-									onChange={inputChange}
-									className="form-item-input description-input option-input"
-								/>
+								<TextAreaComponent tip={'选项' + (index + 1)} item={dragItem} attr='label' className="description-input option-input" />
 							}
 							{/*  其他项设置 set-min-width 样式 */}
 							<div className={`select-item-detail-setting ${dragItem.mode === 0 || item.tag === 'select' ? 'set-min-width' : null}`}>
@@ -173,17 +155,14 @@ const SelectOption = DragContext(memo((props: selectTypes) => {
 							</div>
 						</div>
 						{/*------------ 图片展示区 --------------  */}
-						{dragItem.imgUrl ? <RenderImg
-							list={[dragItem.imgUrl]}
-							align='left'
-							deleteCallback={() => editImageCallback('')}
-							cropCallback={editImageCallback}
-						/> : null}
+						{dragItem.imgUrl ? <RenderImg list={[dragItem.imgUrl]} align='left'
+							deleteCallback={() => editImageCallback('')} cropCallback={editImageCallback}
+						/> : null
+						}
 						{/* ----------------- 展示关联的信息 ------------------- */}
 						{dragItem.jumpTo.length ?
 							<div className='jump-info-text'>{renderRelevanceText(dragItem.jumpTo)}</div> : null
 						}
-
 						{/* ----------------- 展示标签的信息 ------------------- */}
 						{dragItem.marks.length ?
 							<div className='jump-info-text'>{renderMarkLabelText(dragItem.marks)}</div> : null
@@ -201,17 +180,14 @@ const SelectOption = DragContext(memo((props: selectTypes) => {
 const ViewSelect = (props: propTypes) => {
 
 	const { item, modal, tag } = props;
-
 	const state = useContext(StateContext);
 
 	// 更新页面
 	const update = useUpdate();
-
 	// 多选题选择数量弹框显示
 	const [checkLimitOpen, setCheckLimitOpen] = useState(false);
 	// 题目关联的弹框显示
 	const [relevanceOpen, setRelevanceOpen] = useState(false);
-
 
 	/* 拖拽修改顺序 */
 	const dragChangeCallback = (changeList: Array<optionProps>) => {
@@ -323,7 +299,7 @@ const ViewSelect = (props: propTypes) => {
 
 	return (
 		<>
-			<div>
+			<div className='select-drag-wrapper'>
 				<SelectOption list={item.options} item={item} dragChangeCallback={dragChangeCallback}
 					deleteOptionCallBack={deleteOptionCallBack} bound='parent' dragClassName='select-dragging' />
 			</div>

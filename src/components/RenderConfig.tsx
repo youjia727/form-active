@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, memo, forwardRef, useImperativeHandle, useCallback } from "react";
 import { Input, InputRef } from 'antd';
-import { useSearchParams } from "react-router-dom";
 import Customize from '@/components/Customize';
 import RenderImg from '@/components/RenderImg';
 import EditorContext from '@/components/EditorContext';
@@ -13,37 +12,111 @@ import { baseProps, objProps } from '@/assets/utils/formConfig/editorConfig';
 import utils from "@/assets/utils";
 import '@/assets/style/renderConfig.less';
 
-
 interface noteTypes {
 	content: string,
 	align: string
+};
+interface formListTypes {
+	list: Array<baseProps>
 }
-
 
 // 描述框的id
 const startDescId: string = '20230501';
 
-const RenderConfig = forwardRef((props: objProps, ref) => {
-	// const [search, setSearch] = useSearchParams();
+// 渲染表单列表数据
+const RenderFormListConfig = memo(forwardRef((props: objProps, ref) => {
+
 	const containerRef = useRef<HTMLDivElement>(null);
-
 	const dispatch: AppDispatch = useDispatch();
-	
-	// 描述语的ref
-	const inputRef = useRef<noteTypes | null>(null);
-
-	// 标题的ref
-	const titleRef = useRef<InputRef | null>(null);
-
 	// 获取本地存储的表单信息
 	const formData = useSelector((state: RootState) => utils.deepClone(state.form.formData));
-	console.log('formData===========', formData)
-	
+	//列表数据
+	const [list, setList] = useState<Array<baseProps>>(formData?.list || []);
+
+	/* ref传递值 */
+	useImperativeHandle(ref, () => {
+		return {
+			list
+		}
+	})
+
+	useEffect(() => {
+		// 监听用户选择组件
+		event.on('transfer-data', (item: baseProps) => {
+			item['time'] = Date.now();
+			setList([...list, item]);
+			dispatch(setFocusId(item.id));
+			const { current } = containerRef;
+			const height = (current?.scrollHeight as number) + 10000;
+			window.scrollTo({
+				top: height,
+				behavior: 'smooth' // 平滑滚动
+			})
+		});
+		// 清空数据
+		event.on('clear', () => {
+			setList([]);
+		})
+		return () => {
+			event.off();
+		}
+	}, [list.length]);
+
+	/* 删除每项的数据回调 */
+	const deleteOptionCallBack = useCallback((idx: number) => {
+		setList(preList => {
+			const newList = [...preList];
+			newList.splice(idx, 1);
+			const focusId: string = newList[idx]?.id || newList[idx - 1]?.id || '';
+			focusId.length && dispatch(setFocusId(focusId));
+			return newList;
+		})
+	}, []);
+	/* 拖拽调整顺序 */
+	const dragChangeCallback = useCallback((changeList: Array<baseProps>) => {
+		setList(preList => {
+			// 记录拖拽之前的顺序
+			dispatch(setFormList(utils.deepClone(preList)));
+			return changeList;
+		})
+	}, []);
+
+	return (
+		<StateContext.Provider value={{ list }}>
+			<div className="create-form-question-wrapper" ref={containerRef}>
+				{list.length ?
+					<EditorContext
+						list={list}
+						dragChangeCallback={dragChangeCallback}
+						deleteOptionCallBack={deleteOptionCallBack}
+						dragClassName='dragging'
+					/> :
+					<div className="empty-question" onClick={() => dispatch(setFocusId(0))}>
+						点击左侧题型添加问题
+					</div>
+				}
+			</div>
+		</StateContext.Provider>
+	)
+}))
+
+// 渲染配置页面展示
+const RenderConfig = forwardRef((props: objProps, ref) => {
+
+	const dispatch: AppDispatch = useDispatch();
+	// 描述语的ref
+	const inputRef = useRef<noteTypes | null>(null);
+	// 标题的ref
+	const titleRef = useRef<InputRef | null>(null);
+	// 表单列表ref
+	const formRef = useRef<formListTypes | null>(null);
+	// 获取本地存储的表单信息
+	const formData = useSelector((state: RootState) => utils.deepClone(state.form.formData));
+	// console.log('formData===========', formData)
+
 	/**
 	 * * 定义数据
 	 *  */
-	//列表数据
-	const [list, setList] = useState<Array<baseProps>>(formData?.list || []);
 	// 表单标题
 	const [title, setTitle] = useState(formData?.title || '');
 	// 描述语内容
@@ -64,40 +137,25 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 				align,
 				imageList
 			},
-			list,
+			list: formRef.current?.list || [],
 			handleFocus
 		}
 	})
 
 	useEffect(() => {
-		// 监听用户选择组件
-		event.on('transfer-data', (item: baseProps) => {
-			item['time'] = +new Date();
-			setList([...list, item]);
-			const { current } = containerRef;
-			const height = (current?.scrollHeight as number) + 10000;
-			window.scrollTo({
-				top: height,
-				behavior: 'smooth' // 平滑滚动
-			})
-			dispatch(setFocusId(item.id));
-		});
+		// 清空数据
 		event.on('clear', () => {
 			setTitle('');
 			setContent('');
 			setAlign('center');
 			setImageList([]);
-			setList([]);
 		})
-		return () => {
-			event.off();
-		}
-	}, [list.length]);
-
+	}, [formRef.current?.list.length]);
 
 	/**
 	 * * 自定义函数
 	 *  */
+
 	/* 设置标题聚焦 */
 	const handleFocus = () => {
 		const { current } = titleRef;
@@ -109,8 +167,13 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 		setAlign(data.align);
 	}, [])
 	/* 上传图片的回调函数, 裁剪图片的回调 */
-	const editImageCallback = useCallback((url: string) => {
-		setImageList((preList => [...preList, url]));
+	const editImageCallback = useCallback((url: string, idx?: number) => {
+		console.log(idx)
+		setImageList((preList => {
+			const newList = [...preList];
+			typeof idx === 'undefined' ? newList.push(url) : newList.splice(idx, 1, url);
+			return newList;
+		}));
 	}, []);
 	/* 图片删除的回调函数 */
 	const deleteCallback = useCallback((idx: number) => {
@@ -120,28 +183,9 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 			return newList;
 		});
 	}, []);
-	/* 删除每项的数据回调 */
-	const deleteOptionCallBack = useCallback((idx: number) => {
-		setList(preList => {
-			const newList = [...preList];
-			newList.splice(idx, 1);
-			const focusId: string = newList[idx]?.id || newList[idx - 1]?.id || '';
-			focusId.length && dispatch(setFocusId(focusId));
-			return newList;
-		})
-	}, []);
-	/* 拖拽调整顺序 */
-	const dragChangeCallback = useCallback((changeList: Array<baseProps>) => {
-		setList(preList => {
-			// 记录拖拽之前的顺序
-			dispatch(setFormList(utils.deepClone(preList)));
-			return changeList;
-		})
-	}, []);
-
 
 	return (
-		<div className="render-config-container" ref={containerRef}>
+		<div className="render-config-container">
 			{/* 设置标题 */}
 			<div id="form-question-title" className={`form-title ${focusId === 'title' ? 'edit-title' : ''}`} onClick={() => dispatch(setFocusId('title'))}>
 				<Input
@@ -171,22 +215,8 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 				<RenderImg list={imageList} deleteCallback={deleteCallback} cropCallback={editImageCallback} />
 			</div>
 
-			{/*---------- 配置表单展示容器 -----------*/}
-			<StateContext.Provider value={{ list }}>
-				<div className="create-form-question-wrapper">
-					{list.length ?
-						<EditorContext
-							list={list}
-							dragChangeCallback={dragChangeCallback}
-							deleteOptionCallBack={deleteOptionCallBack}
-							dragClassName='dragging'
-						/> :
-						<div className="empty-question" onClick={() => dispatch(setFocusId(0))}>
-							点击左侧题型添加问题
-						</div>
-					}
-				</div>
-			</StateContext.Provider>
+			{/*---------- 表单列表展示容器 -----------*/}
+			<RenderFormListConfig ref={formRef} />
 		</div>
 	)
 })

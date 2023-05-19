@@ -23,12 +23,15 @@ function RenderImg(props: propTypes) {
 	 */
 	// 控制裁剪图片弹框显示
 	const [open, setOpen] = useState(false);
-	// 当前裁剪图片的对象
+	// 当前裁剪的索引
+	const [cropIdx, setCropIdx] = useState(0);
+	// 当前裁剪图片的url
 	const [cropImg, setCropImg] = useState('');
 
 	/* 打开裁剪图片的弹框 */
-	const cropImage = (url: string) => {
-		setCropImg(url)
+	const cropImage = (url: string, idx: number) => {
+		setCropImg(url);
+		setCropIdx(idx);
 		setOpen(true);
 	};
 	/* 关闭裁剪图片的弹框 */
@@ -52,29 +55,26 @@ function RenderImg(props: propTypes) {
 
 
 	return (
-		<div className="image-render-container" style={{textAlign: align === 'left' ? align : 'center'}}>
-			{
-				list && list.map((imgUrl: string, idx: number) => (
-					/* 图片列表 */
-					<div className="image-render-block" key={`${Math.random() + idx}`}>
-						<div className="image-item">
+		<div className="image-render-container" style={{ textAlign: align === 'left' ? align : 'center' }}>
+			{list.map((imgUrl: string, idx: number) => (
+				<div className="image-render-block" key={`${Math.random() + idx}`}>
+					<div className="image-item">
 						<img src={imgUrl} alt="" />
 						<div className="image-render-option">
-							<div className="image-render-option-item" onClick={() => cropImage(imgUrl)}>
+							<div className="image-render-option-item" onClick={() => cropImage(imgUrl, idx)}>
 								<IconFont type="icon-caijian" className="imgage-option-icon" />
 								<span>裁剪</span>
 							</div>
-							<div className="image-render-option-item" onClick={e => deleteImage(idx)}>
+							<div className="image-render-option-item" onClick={() => deleteImage(idx)}>
 								<IconFont type="icon-shanchu" className="imgage-option-icon" />
 								<span>删除</span>
 							</div>
 						</div>
 					</div>
-					</div>
-				))
-			}
+				</div>
+			))}
 			{/* 裁剪图片的弹框 */}
-			<CropImageModal open={open} imgUrl={cropImg} cropCallback={cropCallback} cancel={closeModal} />
+			<CropImageModal open={open} idx={cropIdx} imgUrl={cropImg} cropCallback={cropCallback} cancel={closeModal} />
 		</div>
 	)
 }
