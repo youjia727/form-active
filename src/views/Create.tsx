@@ -11,6 +11,8 @@ import CommonQuestion from '@/components/modal/CommonQuestion';
 import { FormOutlined, EyeOutlined } from '@ant-design/icons';
 // 美化滚动条组件
 import FreeScrollBar from 'react-free-scrollbar';
+// 查看json页面
+import JsonDrawer from "@/components/JsonDrawer";
 // 预览页面
 import Preview from "@/components/Preview";
 import {
@@ -26,9 +28,7 @@ import utils from '@/assets/utils';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import { commonComp } from "@/store/reducers/formReducer";
-import { saveAs } from 'file-saver';
 import '@/assets/style/create.less';
-
 
 interface headerTypes {
 	content: string,
@@ -60,13 +60,9 @@ function scrollError(targetId: string) {
 export default function Create() {
 
 	const message = useMessage();
-
 	const formRef = useRef<formConfigTypes>(null);
-
 	const downloadRef = useRef<HTMLAnchorElement>(null);
-
 	const dispatch: AppDispatch = useDispatch();
-
 
 	/**
 	 * * 定义数据
@@ -84,13 +80,14 @@ export default function Create() {
 	const [status, setStatus] = useState(false);
 	// 是否编辑结束语
 	const [editResult, setEditResult] = useState(false);
+	// 是否展示json数据页面
+	const [jsonOpen, setJsonOpen] = useState(false);
 	// 是否展示预览页面
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	// 表单数据
 	const [formData, setFormData] = useState<formConfigTypes | null>(null);
 	// 结束语数据
 	const result = useSelector((state: RootState) => state.form.result);
-
 
 	/**
 	 * * 生命周期函数
@@ -184,6 +181,14 @@ export default function Create() {
 		};
 		return current;
 	};
+	/* 查看json */
+	const handleShowJson = () => {
+		const values = handleSubmit();
+		if (!values) return;
+		setFormData(values);
+		dispatch(setFocusId(0));
+		setJsonOpen(true);
+	};
 	/* 预览 */
 	const handlePreview = () => {
 		const values = checkForm();
@@ -193,10 +198,6 @@ export default function Create() {
 		});
 		dispatch(setFocusId(0));
 		setDrawerOpen(true);
-	};
-	/* 查看json */
-	const handleShowJson = () => {
-		message.info('功能正在开发中，请耐心等待');
 	};
 	/* 导出tsx文件 */
 	const handleDownload = () => {
@@ -218,13 +219,10 @@ export default function Create() {
 			list: values.list,
 			result
 		}
-		console.log(formJsonData.toString())
-		// const blob = new Blob([JSON.stringify(formJsonData)], { type: 'text/plain;charset=utf-8' })
-		// saveAs(blob, 'formData.json');
-		// message.info('请打开控制查看打印结果');
 		console.log('表单描述语：', values.header);
 		console.log('表单列表数据：', values.list);
 		console.log('表单结束语：', result);
+		return formJsonData;
 	};
 
 	return (
@@ -310,7 +308,6 @@ export default function Create() {
 									<Button type="link" icon={<IconFont type="icon-xiazai" />} onClick={handleDownload}>导出tsx文件</Button>
 									<Button type="link" danger icon={<IconFont type="icon-shanchu" />} onClick={handleClear}>清空</Button>
 								</Space>
-								<a className="download" ref={downloadRef} href="/public/download.zip" target="_blank" download="write.zip"></a>
 							</div>
 							{/*--------- 展示form配置的内容------------ */}
 							<RenderConfigContainer ref={formRef} />
@@ -369,7 +366,6 @@ export default function Create() {
 					<Result callback={showResultPage} />
 				</>
 			}
-
 			{/* ------------- 预览页面 --------------- */}
 			<Drawer
 				rootClassName="preview-drawer-container"
@@ -382,6 +378,19 @@ export default function Create() {
 			>
 				<Preview mode='preview' formData={formData} open={drawerOpen} />
 			</Drawer>
+			{/* ----------- 查看json文件 ------------ */}
+			<Drawer
+				rootClassName="preview-drawer-container"
+				className="preview-drawer-box json-drawer-box"
+				width='50%'
+				placement="right"
+				onClose={() => setJsonOpen(false)}
+				open={jsonOpen}
+			>
+				<JsonDrawer jsonString={JSON.stringify(formData)} open={jsonOpen} />
+			</Drawer>
+			{/* ----------- 导出tsx文件 ------------- */}
+			<a className="download" ref={downloadRef} href="/public/download.zip" target="_blank" download="write.zip"></a>
 		</div>
 	)
 }

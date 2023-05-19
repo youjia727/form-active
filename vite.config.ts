@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import react from '@vitejs/plugin-react-swc';
+// import monacoWebpackPlugin from 'monaco-editor-webpack-plugin';
+// const monacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const imageRegExp = /\.(jpe?g|png|svg|gif)(\?[a-z0-9=.]+)?$/;
 const fontRegExp = /\.(eot|woff|woff2|ttf)(\?.*)?$/;
 const cssRegExp = /\.(css)(\?.*)?$/;

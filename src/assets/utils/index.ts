@@ -535,17 +535,22 @@ export default {
 		return true
 	},
 	// 动态加载文件,默认加载js文件
-	loadscript(url: string, type: string) {
+	loadscript(url: string, callback: Function, type?: string) {
 		if (!url) {
-			return
+			return;
 		}
-		let script = document.createElement("script");
+		let script: any = document.createElement("script");
 		script.type = "text/javacript";
 		if (type) {
 			script.type = type
 		}
 		script.src = url;
 		document.body.appendChild(script);
+		console.log(url)
+		script.onload = script.onreadystatechange = function() {
+			if (this.readyState !== 'complete' && this.readyState !== 'loaded') return;
+			callback();
+		}
 	},
 	// 获取url参数
 	getQueryString(search: string) {
