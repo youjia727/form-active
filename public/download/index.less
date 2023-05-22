@@ -277,10 +277,17 @@
 
         /* 日期样式 */
         .date-picker-wrapper {
-            display: flex;
+            position: relative;
 
             .date-icon {
-                margin-right: 8px;
+                position: absolute;
+                left: 0;
+                top: 8px;
+                z-index: 100;
+            }
+
+            .single-picker {
+                padding-left: 20px;
             }
         }
 
@@ -304,6 +311,11 @@
 
                 &:hover {
                     border-color: @primary-color;
+                }
+
+                &:first-of-type {
+                    padding-left: 20px;
+                    box-sizing: border-box;
                 }
             }
 

@@ -745,7 +745,7 @@ function Preview(props: propTypes) {
 											showTime={item.picker === 'minute' ? { format: 'HH:mm' } : false}
 											onChange={(date: any, dateString: string) => validateFormItem(item.id, dateString)}
 											getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
-											suffixIcon={''} className='write-input'
+											suffixIcon={''} className='write-input single-picker'
 										/> :
 										<RangePicker
 											value={rangeDateValueCallback(item.id)}

@@ -168,7 +168,6 @@ const RenderConfig = forwardRef((props: objProps, ref) => {
 	}, [])
 	/* 上传图片的回调函数, 裁剪图片的回调 */
 	const editImageCallback = useCallback((url: string, idx?: number) => {
-		console.log(idx)
 		setImageList((preList => {
 			const newList = [...preList];
 			typeof idx === 'undefined' ? newList.push(url) : newList.splice(idx, 1, url);

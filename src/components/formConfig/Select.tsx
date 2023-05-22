@@ -145,7 +145,7 @@ const SelectOption = DragContext(memo((props: selectTypes) => {
 							<div className={`select-item-detail-setting ${dragItem.mode === 0 || item.tag === 'select' ? 'set-min-width' : null}`}>
 								{dragItem.mode === 0 || item.tag === 'select' ? null :
 									<Upload uploadCallback={editImageCallback}>
-										<span className='add-text primary-color opacity'>{dragItem.imgUrl ? '替换' : '添加'}图片</span>
+										<span className='add-text primary-color'>{dragItem.imgUrl ? '替换' : '添加'}图片</span>
 									</Upload>
 								}
 								<span onClick={() => setMarkLabelOpen(true)} className='add-text primary-color opacity'>

@@ -312,7 +312,7 @@ export default function Create() {
 
 							{/*--------- 展示form配置的内容------------ */}
 							<RenderConfigContainer ref={formRef} />
-							
+
 							{/* 结束语-分隔线 */}
 							<div className="form-bottom">
 								<Divider dashed style={{ fontSize: 14 }}>
@@ -369,30 +369,17 @@ export default function Create() {
 				</>
 			}
 			{/* ------------- 预览页面 --------------- */}
-			<Drawer
-				rootClassName="preview-drawer-container"
-				className="preview-drawer-box"
-				mask={false}
-				width='100%'
-				placement="right"
-				onClose={() => setDrawerOpen(false)}
-				open={drawerOpen}
-			>
+			<Drawer open={drawerOpen} mask={false} width='100%' placement="right" onClose={() => setDrawerOpen(false)}
+				rootClassName="preview-drawer-container" className="preview-drawer-box">
 				<Preview mode='preview' formData={formData} open={drawerOpen} />
 			</Drawer>
 			{/* ----------- 查看json文件 ------------ */}
-			<Drawer
-				rootClassName="preview-drawer-container"
-				className="preview-drawer-box json-drawer-box"
-				width='50%'
-				placement="right"
-				onClose={() => setJsonOpen(false)}
-				open={jsonOpen}
-			>
+			<Drawer width='50%' open={jsonOpen} placement="right" onClose={() => setJsonOpen(false)}
+				rootClassName="preview-drawer-container" className="preview-drawer-box json-drawer-box">
 				<JsonDrawer jsonString={JSON.stringify(formData)} open={jsonOpen} />
 			</Drawer>
 			{/* ----------- 导出tsx文件 ------------- */}
-			<a className="download" ref={downloadRef} href="/public/download.zip" target="_blank" download="write.zip"></a>
+			<a className="download" ref={downloadRef} href="/public/download.zip" target="_blank" download="form.zip"></a>
 		</div>
 	)
 }

@@ -1,8 +1,8 @@
-import { forwardRef, memo, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, memo, useImperativeHandle, useState, useEffect } from "react";
 import { Input } from 'antd';
 import Upload from "./Upload";
 import { PictureOutlined } from '@ant-design/icons';
-import { TextAreaRef } from "antd/es/input/TextArea";
+import event from "@/assets/utils/event";
 import '@/assets/style/customize.less';
 
 const { TextArea } = Input;
@@ -27,8 +27,6 @@ interface paramsType {
 const Customize = forwardRef((props: paramsType, ref) => {
 
 	const { text, imgSize, max, data, uploadCallback, inputChange, show = true } = props;
-	// 输入描述语的ref
-	const textareaRef = useRef<TextAreaRef>(null);
 	//描述的内容
 	const [content, setContent] = useState(() => data ? data.content : '');
 	// 对齐方式 //
@@ -41,6 +39,13 @@ const Customize = forwardRef((props: paramsType, ref) => {
 			align
 		}
 	});
+
+	useEffect(() => {
+		event.on('clear', () => {
+			setContent('');
+		})
+	}, [])
+
 	/* 失去焦点 */
 	const handleBlur = (type: string) => {
 		if (data?.content === content && data?.align === type) return;
@@ -57,39 +62,21 @@ const Customize = forwardRef((props: paramsType, ref) => {
 
 	return (
 		<>
-			<TextArea
-				ref={textareaRef}
-				value={content}
-				maxLength={1000}
-				placeholder={text}
-				autoSize
-				onChange={e => setContent(e.target.value)}
-				onBlur={() => handleBlur(align)}
-				className="textarea-input"
-				style={{
+			<TextArea value={content} maxLength={1000} placeholder={text} autoSize
+				onChange={e => setContent(e.target.value)} onBlur={() => handleBlur(align)}
+				className="textarea-input" style={{
 					textAlign: align === 'center' ? 'center' : 'left'
-				}}
-			/>
+				}} />
 			<div className="adjustment-box">
 				{show ?
 					<>
 						<div className="justify-type">
 							{/* 左对齐 */}
-							<img
-								className={align === 'left' ? 'checked' : ''}
-								src="/image/form/left.png"
-								title="左对齐"
-								onClick={() => handleSetAlign('left')}
-								alt=""
-							/>
+							<img className={align === 'left' ? 'checked' : ''} src="/image/form/left.png"
+								title="左对齐" onClick={() => handleSetAlign('left')} alt="" />
 							{/* 居中对齐 */}
-							<img
-								className={align === 'center' ? 'checked' : ''}
-								src="/image/form/center.png"
-								title="居中对齐"
-								onClick={() => handleSetAlign('center')}
-								alt=""
-							/>
+							<img className={align === 'center' ? 'checked' : ''} src="/image/form/center.png"
+								title="居中对齐" onClick={() => handleSetAlign('center')} alt="" />
 						</div>
 						{/* 上传图片 */}
 						<Upload imgSize={imgSize} max={max} uploadCallback={uploadCallback}>
