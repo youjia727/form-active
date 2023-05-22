@@ -12,6 +12,7 @@ react可视化表单设计及代码生成器，可将多种不同的组件通过
 - @reduxjs/toolkit 1.9.2
 - antd 5.4.6
 - @dnd-kit 6.0.0+
+- monaco-editor + js-beautify + file-saver 可视化文件导出
 
 ## 运行
 - 确保已经安装node.js 16.8+
