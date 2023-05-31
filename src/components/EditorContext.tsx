@@ -45,7 +45,8 @@ const renderComponentCallback = (type: string, item: baseProps, tag: string, mod
 		multipInput: <MultipleInputComponent item={item} />,
 		date: <DateComponent item={item} />,
 		cascader: tag === 'address' ? <AddressComponent item={item} /> : <CascaderComponent item={item} />,
-		rate: <RateComponent item={item} />
+		rate: <RateComponent item={item} />,
+		signature: <div className='signature default'>填写者输入签名区</div>
 	};
 	return strategyCallback[type as keyof typeof strategyCallback];
 };
@@ -181,7 +182,7 @@ const EditorContext = (props: propTypes) => {
 	);
 
 	return (
-		<div onClick={() => handleSelectActive(item.id)} id={`form-question-${item.id}`}
+		<div onClick={() => handleSelectActive(item.id)} id={item.id}
 			className={`form-question-item ${item.id === focusId ? 'question-content-actived' : ''}`}
 			style={{ paddingTop: modal ? 16 : 'auto' }}>
 			{!modal ?

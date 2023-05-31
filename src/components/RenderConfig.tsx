@@ -11,6 +11,7 @@ import event from "@/assets/utils/event";
 import { baseProps, objProps } from '@/assets/utils/formConfig/editorConfig';
 import utils from "@/assets/utils";
 import '@/assets/style/renderConfig.less';
+import { flushSync } from "react-dom";
 
 interface noteTypes {
 	content: string,

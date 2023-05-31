@@ -1,7 +1,7 @@
 import { useState, memo, useMemo, useEffect } from 'react';
 import { Popover, Cascader } from 'antd';
 import { CheckOutlined, CaretDownOutlined, CloseCircleFilled } from '@ant-design/icons';
-import '@/assets/style/cascaderList.less';
+import '@/assets/style/cascader.less';
 
 
 type objTypes = {

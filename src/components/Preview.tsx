@@ -3,7 +3,8 @@ import { Button, Checkbox, Input, Space, Radio, Select, Rate, DatePicker } from 
 import { CaretDownOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import IconFont from './IconFont';
 import options from '@/assets/utils/options';
-import CascaderList from '@/components/CascaderList';
+import Cascader from '@/components/Cascader';
+import Signature from './Signature';
 import utils from '@/assets/utils';
 import dayjs from 'dayjs';
 import { useUpdate } from '@/hooks/useUpdate';
@@ -348,7 +349,7 @@ function Preview(props: propTypes) {
 		if (optionItem && (submitValues[attr]?.value === optionItem.id ||
 			(Array.isArray(submitValues[attr]?.value) &&
 				submitValues[attr]?.value?.includes(optionItem.id)))) return true;
-		// 如果其他内容有数据就清空内容
+		// 如果选中非其他内容项，就清除之前其他内容（有可能之前选中其他，现在修改选项）
 		if (submitValues[attr]) {
 			submitValues[attr].details = undefined;
 		}
@@ -554,33 +555,29 @@ function Preview(props: propTypes) {
 						<>
 							{/* --------------- 单行输入 ----------------- */}
 							{item.tag === 'input' ?
-								<Input
-									maxLength={item.max}
-									value={submitValues[item.id]?.value}
+								<Input maxLength={item.max} value={submitValues[item.id]?.value}
 									onChange={e => validateFormItem(item.id, e.target.value)}
-									className='write-input'
-									placeholder='请输入'
+									className='write-input' placeholder='请输入'
 								/> : null
 							}
 
 							{/* --------------- 多行输入 ----------------- */}
 							{item.tag === 'textarea' ?
-								<TextArea
-									maxLength={item.max}
-									value={submitValues[item.id]?.value}
+								<TextArea maxLength={item.max} value={submitValues[item.id]?.value}
 									onChange={e => validateFormItem(item.id, e.target.value)}
-									className='write-input'
-									autoSize
-									placeholder='请输入'
+									className='write-input' autoSize placeholder='请输入'
 								/> : null
+							}
+
+							{/* --------------- 电子签名 ----------------- */}
+							{item.tag === 'signature' ?
+								<Signature imgUrl={submitValues[item.id]?.value} onFinish={(url: string) => validateFormItem(item.id, url)}
+									onCancel={() => validateFormItem(item.id, undefined)} /> : null
 							}
 
 							{/* --------------- 单选题 ----------------- */}
 							{item.tag === 'radio' ?
-								<Radio.Group
-									value={submitValues[item.id]?.value}
-									className={`select-group ${selectLayoutCallback(item.options)}`}
-								>
+								<Radio.Group value={submitValues[item.id]?.value} className={`select-group ${selectLayoutCallback(item.options)}`}>
 									{item.options.map((option: optionTypes, idx: number) => (
 										<div key={item.id + '-' + option.id} className='select-item'>
 											<Radio value={option.id} onChange={e => radioChange(item.id, e.target.value, item.options, idx)}>
@@ -609,8 +606,7 @@ function Preview(props: propTypes) {
 
 							{/* --------------- 多选题 ----------------- */}
 							{item.tag === 'checkbox' ?
-								<Checkbox.Group
-									value={submitValues[item.id]?.value}
+								<Checkbox.Group value={submitValues[item.id]?.value}
 									onChange={values => checkboxChange(item.id, values, item.options)}
 									className={`select-group ${selectLayoutCallback(item.options)}`}
 								>
@@ -639,32 +635,20 @@ function Preview(props: propTypes) {
 							{/* --------------- 下拉题 ----------------- */}
 							{item.tag === 'select' ?
 								<div className='space-wrapper'>
-									<Select
-										mode={item.multiple ? 'multiple' : undefined}
-										showSearch
-										allowClear
-										value={submitValues[item.id]?.value}
-										onChange={value => dropdownChange(item.id, value, item.options)}
-										suffixIcon={<CaretDownOutlined />}
+									<Select mode={item.multiple ? 'multiple' : undefined} showSearch allowClear suffixIcon={<CaretDownOutlined />}
+										value={submitValues[item.id]?.value} onChange={value => dropdownChange(item.id, value, item.options)}
 										filterOption={(input, option) => ((option?.label ?? '') as string).includes(input)}
-										placeholder="请选择内容"
-										popupClassName='dropdown-select-wrapper'
-										style={{ width: '100%' }}
+										placeholder="请选择内容" popupClassName='dropdown-select-wrapper' style={{ width: '100%' }}
 									>
 										{item.options.map((option: optionTypes, idx: number) => (
-											<Option
-												key={item.id + '-' + option.id}
-												value={option.id}
-												label={option.label || '选项' + (idx + 1)}
-											>{option.label || '选项' + (idx + 1)}
+											<Option key={item.id + '-' + option.id} value={option.id} label={option.label || '选项' + (idx + 1)}>
+												{option.label || '选项' + (idx + 1)}
 											</Option>
 										))}
 									</Select>
 									{/* ------- 选择 其他 内容输入框 ---------- */}
 									{renderShowDetailInput(item.id, item.options) ?
-										<TextArea
-											className='write-input'
-											autoSize placeholder='请输入'
+										<TextArea className='write-input' autoSize placeholder='请输入'
 											onChange={e => setDetailFormInput(item.id, e.target.value)}
 										/> : null
 									}
@@ -675,18 +659,14 @@ function Preview(props: propTypes) {
 							{item.tag === 'multipInput' ?
 								<div className='multiple-input-wrapper'>
 									{mutileQuestionToList(item.question).map((stepText, idx) => (
-										<div className={stepText === inputCharacter ? 'step-input-warpper' : 'step-text'}
-											key={item.id + '-' + idx}>
+										<div key={item.id + '-' + idx} className={stepText === inputCharacter ? 'step-input-warpper' : 'step-text'}>
 											{stepText === inputCharacter ?
 												<>
 													<span>{submitValues[item.id]?.value ? submitValues[item.id]?.value[idx] : null}</span>
 													<div className='step-input-item'>
-														<TextArea
-															value={submitValues[item.id]?.value ? submitValues[item.id]?.value[idx] : ''}
+														<TextArea value={submitValues[item.id]?.value ? submitValues[item.id]?.value[idx] : ''}
 															onChange={e => multipleInputChange(item.id, e.target.value, idx)}
-															className='write-input step-input'
-															autoSize
-															placeholder='请输入'
+															className='write-input step-input' autoSize placeholder='请输入'
 														/>
 													</div>
 												</> : <>{stepText}</>
@@ -698,11 +678,7 @@ function Preview(props: propTypes) {
 
 							{/* --------------- 评分题 ----------------- */}
 							{item.tag === 'rate' ?
-								<Rate
-									value={submitValues[item.id]?.value}
-									onChange={value => validateFormItem(item.id, value)}
-									count={item.count}
-								/> : null
+								<Rate value={submitValues[item.id]?.value} onChange={value => validateFormItem(item.id, value)} count={item.count} /> : null
 							}
 
 							{/* --------------- 日期题 ----------------- */}
@@ -736,12 +712,9 @@ function Preview(props: propTypes) {
 							{/* --------------- 层级联动题 ----------------- */}
 							{item.type === 'cascader' ?
 								<div className='space-wrapper'>
-									<CascaderList
-										column={item.levelCount}
-										options={item.tag === 'address' ? options : item.options}
-										checkedValue={submitValues[item.id]?.value}
+									<Cascader column={item.levelCount} options={item.tag === 'address' ? options : item.options}
+										checkedValue={submitValues[item.id]?.value} placeholder={cascaderPlaceholderCallback(item.cascaderMode)}
 										onFinish={(checkedList: Array<string>) => validateFormItem(item.id, checkedList)}
-										placeholder={cascaderPlaceholderCallback(item.cascaderMode)}
 									/>
 									{item.setDetail ?
 										<div className='detail-input-wrapper'>

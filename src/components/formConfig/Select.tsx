@@ -246,9 +246,8 @@ const ViewSelect = (props: propTypes) => {
 					// 增加跳转源选项
 					setJumpedItem.isSetJumped.push(sourceJumpItem);
 				} else {
-					// 删除跳转源选项 这儿有问题
-					const newSetJumpedList = utils.remove(setJumpedItem.isSetJumped, sourceJumpItem);
-					setJumpedItem.isSetJumped = newSetJumpedList;
+					// 删除跳转源选项
+					setJumpedItem.isSetJumped = utils.remove(setJumpedItem.isSetJumped, sourceJumpItem);
 				}
 			}
 		})

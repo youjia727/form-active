@@ -48,7 +48,7 @@ interface formConfigTypes extends formListType {
 
 // 滚动到第一个错误的位置
 function scrollError(targetId: string) {
-	let anchorElement = document.getElementById(`form-question-${targetId}`);
+	let anchorElement = document.getElementById(`${targetId}`);
 	if (anchorElement) {
 		anchorElement.scrollIntoView({
 			behavior: 'smooth',

@@ -1,3 +1,5 @@
+import utils from "../index";
+
 export interface objProps {
     [key: string]: any
 }
@@ -136,14 +138,17 @@ export const initComponent = (tag: string, initValues: objProps = {}) => {
     switch (tag) {
         case 'input':
         case 'textArea':
-            config.type = 'input';
+        case 'signature':
+            config.type = tag === 'signature' ? 'signature' : 'input';
             Object.assign(config, inputInit, initValues);
             break;
         case 'radio':
         case 'checkbox':
         case 'select':
             config.type = 'select';
-            Object.assign(config, selectInit, initValues)
+            const selectInitClone = utils.deepClone(selectInit);
+            selectInitClone.multiple = tag === 'checkbox';
+            Object.assign(config, selectInitClone, initValues);
             break;
         case 'multipInput':
             config.type = 'multipInput';
@@ -201,6 +206,10 @@ export const baseCompList: Array<baseCompProps> = [{
     label: '级联选择',
     icon: 'guanlian',
     tag: 'cascader'
+}, {
+    label: '电子签名',
+    icon: 'qianming',
+    tag: 'signature'
 }];
 
 // 常用组件展示
